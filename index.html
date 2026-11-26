@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>इयत्ता १० वी — संपूर्ण अभ्यासक्रम व प्रश्नोत्तरे</title>
+  <style>
+    :root {
+      --primary: #1e40af;
+      --primary-light: #eff6ff;
+      --secondary: #0f766e;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #cbd5e1;
+      --danger: #dc2626;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, "Noto Sans Devanagari", sans-serif;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      color: #fff;
+      padding: 18px 16px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.45rem;
+    }
+
+    header p {
+      margin: 4px 0 0;
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 16px auto 40px;
+      padding: 0 14px;
+    }
+
+    /* Subject Tabs */
+    .subjects {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      scrollbar-width: thin;
+    }
+
+    .subject-btn {
+      border: 1px solid var(--border);
+      padding: 10px 16px;
+      border-radius: 10px;
+      background: #fff;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.92rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .subject-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 18px;
+      margin-top: 14px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+      border: 1px solid #e2e8f0;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .card-header h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      color: var(--primary);
+    }
+
+    /* Chapters Grid */
+    .chapters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 10px;
+    }
+
+    .chapter-item {
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      cursor: pointer;
+      background: #f8fafc;
+      font-weight: 600;
+      font-size: 0.93rem;
+      transition: 0.15s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chapter-item:hover {
+      border-color: var(--primary);
+    }
+
+    .chapter-item.active {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .badge {
+      background: #e2e8f0;
+      color: #334155;
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .chapter-item.active .badge {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Search & Controls */
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 200px;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+
+    .btn {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: var(--secondary);
+      color: #fff;
+    }
+
+    .btn-outline {
+      background: #fff;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-danger {
+      background: #fee2e2;
+      color: var(--danger);
+      padding: 4px 9px;
+      font-size: 0.8rem;
+    }
+
+    /* Q&A Box */
+    .qa-box {
+      border-left: 4px solid var(--primary);
+      padding: 12px 14px;
+      margin: 12px 0;
+      background: #f8fafc;
+      border-radius: 0 9px 9px 0;
+    }
+
+    .qa-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .question-text {
+      font-weight: 700;
+      font-size: 0.98rem;
+    }
+
+    .q-type {
+      display: inline-block;
+      font-size: 0.75rem;
+      background: #dbeafe;
+      color: #1e40af;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .answer {
+      display: none;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed #cbd5e1;
+      color: #065f46;
+      font-weight: 500;
+      white-space: pre-line;
+    }
+
+    .answer.show {
+      display: block;
+    }
+
+    /* Add Q&A & Chapter Form */
+    .form-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    input[type="text"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.94rem;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 75px;
+    }
+
+    .backup-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .empty-msg {
+      color: var(--muted);
+      font-style: italic;
+      padding: 10px 0;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>इयत्ता १० वी — संपूर्ण अभ्यासक्रम व प्रश्नोत्तरे</h1>
+  <p>सर्व विषय • धड्यानुसार प्रश्नोत्तरे • ऑफलाइन सेव्ह व बॅकअप सुविधा</p>
+</header>
+
+<div class="container">
+  <!-- विषय निवडा -->
+  <div class="subjects" id="subjectTabs"></div>
+
+  <!-- धडे निवडा व नवीन धडा जोडा -->
+  <div class="card">
+    <div class="card-header">
+      <h2 id="selectedSubjectTitle">धडे निवडा</h2>
+      <button class="btn btn-outline" onclick="toggleAddChapter()">+ नवीन धडा जोडा</button>
+    </div>
+
+    <div id="addChapterBox" style="display:none; margin-bottom:14px; background:#f8fafc; padding:12px; border-radius:8px; border:1px solid #cbd5e1;">
+      <div class="form-row">
+        <input type="text" id="newChapterName" placeholder="नवीन धड्याचे नाव लिहा (उदा. धडा ३: रासायनिक अभिक्रिया)" style="flex:1;" />
+        <button class="btn btn-primary" onclick="addNewChapter()">धडा सेव्ह करा</button>
+      </div>
+    </div>
+
+    <div class="chapters-grid" id="chapterList"></div>
+  </div>
+
+  <!-- प्रश्नोत्तरे विभाग -->
+  <div class="card">
+    <div class="card-header">
+      <h2 id="selectedChapterTitle">प्रश्नोत्तरे</h2>
+      <div style="display:flex; gap:8px;">
+        <button class="btn btn-outline" onclick="toggleAllAnswers(true)">सर्व उत्तरे दाखवा</button>
+        <button class="btn btn-outline" onclick="toggleAllAnswers(false)">सर्व उत्तरे लपवा</button>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <input type="text" class="search-input" id="searchInput" placeholder="या धड्यातील प्रश्न किंवा शब्द शोधा..." oninput="renderQA()" />
+    </div>
+
+    <div id="qaContainer"></div>
+  </div>
+
+  <!-- नवीन प्रश्न-उत्तर जोडण्याचा फॉर्म -->
+  <div class="card">
+    <div class="card-header">
+      <h2>या धड्यात नवीन प्रश्न-उत्तर जोडा</h2>
+    </div>
+    <div class="form-grid">
+      <div class="form-row">
+        <select id="qTypeInput" style="max-width: 240px;">
+          <option value="एका वाक्यात उत्तरे">एका वाक्यात उत्तरे</option>
+          <option value="रिकाम्या जागा भरा">रिकाम्या जागा भरा</option>
+          <option value="थोडक्यात उत्तरे">थोडक्यात उत्तरे</option>
+          <option value="शास्त्रीय कारणे">शास्त्रीय कारणे</option>
+          <option value="टीपा लिहा">टीपा लिहा</option>
+          <option value="दीर्घोत्तरी प्रश्न">दीर्घोत्तरी प्रश्न</option>
+        </select>
+        <input type="text" id="questionInput" placeholder="प्रश्न येथे टाइप करा..." style="flex:1;" />
+      </div>
+      <textarea id="answerInput" placeholder="अचूक उत्तर येथे टाइप करा..."></textarea>
+      <div>
+        <button class="btn btn-secondary" onclick="addQA()">प्रश्न व उत्तर सेव्ह करा</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- डेटा बॅकअप आणि रिस्टोअर -->
+  <div class="card">
+    <div class="card-header">
+      <h2>डेटा बॅकअप व ऑफलाइन स्टोरेज</h2>
+    </div>
+    <p style="margin:0 0 10px; font-size:0.9rem; color:var(--muted);">
+      तुम्ही जोडलेले सर्व धडे आणि प्रश्नोत्तरे या डिव्हाइसवर ऑफलाइन सेव्ह राहतात. दुसऱ्या फोन/iPad वर नेण्यासाठी खालील बॅकअप बटण वापरा.
+    </p>
+    <div class="backup-bar">
+      <button class="btn btn-primary" onclick="exportData()">बॅकअप डाउनलोड करा (JSON)</button>
+      <label class="btn btn-outline" style="cursor:pointer;">
+        बॅकअप फाइल अपलोड करा
+        <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(event)" />
+      </label>
+      <button class="btn btn-danger" onclick="resetDefaultData()">मूळ अभ्यासक्रम रिसेट करा</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = "ssc_10th_syllabus_qa_v1";
+
+  const defaultSyllabusData = {
+    "मराठी (कुमारभारती)": [
+      {
+        title: "१. जय जय हे भारत देशा (गीत)",
+        qa: [
+          {
+            type: "एका वाक्यात उत्तरे",
+            q: "'जय जय हे भारत देशा' या गीताचे कवी कोण आहेत?",
+            a: "या गीताचे कवी मंगेश पाडगावकर हे आहेत."
+          },
+          {
+            type: "थोडक्यात उत्तरे",
+            q: "कवीने भारत देशाचा गौरव कोणत्या शब्दांत केला आहे?",
+            a: "नव्या युगाचे नव्याने स्वागत करणाऱ्या, शक्ती आणि युक्तीचा संगम असलेल्या, आणि सर्व भेदांच्या पलीकडे जाऊन मानवतेचा संदेश देणाऱ्या भारत देशाचा कवीने गौरव केला आहे."
+          }
+        ]
+      },
+      {
+        title: "२. बोलतो मराठी",
+        qa: [
+          {
+            type: "थोडक्यात उत्तरे",
+            q: "मराठी भाषेतील शब्दांची व्युत्पत्ती शोधण्याचे फायदे कोणते?",
+            a: "शब्दांची व्युत्पत्ती शोधल्याने शब्दाचा नेमका अर्थ समजतो, भाषेची समृद्धी लक्षात येते आणि चुकीचे शब्दप्रयोग टाळता येतात."
+          }
+        ]
+      },
+      {
+        title: "३. आजी : कुटुंबाचं आगळ",
+        qa: [
+          {
+            type: "टीपा लिहा",
+            q: "आजीचा कुटुंबातील दरारा स्पष्ट करा.",
+            a: "आजी ही संपूर्ण एकत्र कुटुंबाचा आधारस्तंभ होती. तिचे सर्वांवर बारकाईने लक्ष असे आणि तिच्या शिस्तीमुळे संपूर्ण घर एकसंध राहिले होते."
+          }
+        ]
+      }
+    ],
+    "हिंदी (लोकभारती)": [
+      {
+        title: "१. भारत महिमा",
+        qa: [
+          {
+            type: "एका वाक्यात उत्तरे",
+            q: "'भारत महिमा' कविता के रचनाकार कौन हैं?",
+            a: "इस कविता के रचनाकार जयशंकर प्रसाद जी हैं।"
+          },
+          {
+            type: "थोडक्यात उत्तरे",
+            q: "कवि ने भारत की किन विशेषताओं का वर्णन किया है?",
+            a: "कवि ने भारत की प्राकृतिक सुंदरता, ज्ञान के प्रथम उदय, दानशीलता और अतिथि सत्कार की महान परंपरा का वर्णन किया है।"
+          }
+        ]
+      },
+      {
+        title: "२. लक्ष्मी",
+        qa: [
+          {
+            type: "थोडक्यात उत्तरे",
+            q: "करामती अली ने लक्ष्मी को क्यों खरीदा था?",
+            a: "ज्ञान सिंह के नौकरी से अवकाश लेने के बाद गाय को पालना कठिन था, इसलिए करामती अली ने स्नेह और कर्तव्यभाव से लक्ष्मी को खरीदा।"
+          }
+        ]
+      }
+    ],
+    "English (Kumarbharati)": [
+      {
+        title: "1.1 Where the Mind is Without Fear",
+        qa: [
+          {
+            type: "थोडक्यात उत्तरे",
+            q: "What does the poet pray to the Almighty for his country?",
+            a: "Rabindranath Tagore prays for a country where people live without fear, knowledge is free, society is not divided by narrow walls, and truth prevails."
+          }
+        ]
+      },
+      {
+        title: "1.2 The Thief’s Story",
+        qa: [
+          {
+            type: "थोडक्यात उत्तरे",
+            q: "Why did Hari Singh return the stolen money to Anil?",
+            a: "Hari Singh realized that Anil trusted him completely and was teaching him to read and write, which would earn him respect and a better future than stealing."
+          }
+        ]
+      }
+    ],
+    "गणित - भाग १ (बीजगणित)": [
+      {
+        title: "१. दोन चलांतील रेषीय समीकरणे",
+        qa: [
+          {
+            type: "एका वाक्यात उत्तरे",
+            q: "दोन चलांतील रेषीय समीकरणाचे सामान्य रूप लिहा.",
+            a: "ax + by + c = 0 हे दोन चलांतील रेषीय समीकरणाचे सामान्य रूप आहे (येथे a, b, c वास्तव संख्या असून a आणि b एकाच वेळी शून्य नसतात)."
+          },
+          {
+            type: "थोडक्यात उत्तरे",
+            q: "क्रेमरच्या पद्धतीने (Cramer's Rule) x आणि y च्या किमती काढण्याची सूत्रे लिहा.",
+            a: "x = Dx / D आणि y = Dy / D (जेथे D ≠ 0)."
+          }
+        ]
+      },
+      {
+        title: "२. वर्गसमीकरणे",
+        qa: [
+          {
+            type: "एका वाक्यात उत्तरे",
+            q: "वर्गसमीकरणाचा विवेचक (Discriminant) काढण्याचे सूत्र कोणते?",
+            a: "विवेचक Δ (डेल्टा) = b² - 4ac."
+          }
+        ]
+      },
+      {
+        title: "३. अंकगणिती श्रेढी",
+        qa: [
+          {
+            type: "एका वाक्यात उत्तरे",
+            q: "अंकगणिती श्रेढीचे n वे पद (tn) काढण्याचे सूत्र लिहा.",
+            a: "tn = a + (n - 1)d"
+          }
+        ]
+      }
+    ],
+    "गणित - भाग २ (भूमिती)": [
+      {
+        title: "१. समरूपता",
+        qa: [
+          {
+            type: "थोडक्यात उत्तरे",
+            q: "प्रमाणाचे मूलभूत प्रमेय (BPT) लिहा.",
+            a: "त्रिकोणाच्या एका बाजूला समांतर असणारी रेषा त्याच्या उरलेल्या बाजूंना दोन भिन्न बिंदूंत छेदत असेल, तर ती रेषा त्या बाजूंना एकाच प्रमाणात विभागते."
+          }
+        ]
+      },
+      {
+        title: "२. पायथागोरसचे प्रमेय",
+        qa: [
+          {
+            type: "एका वाक्यात उत्तरे",
+            q: "पायथागोरसचे प्रमेय सांगा.",
+            a: "काटकोन त्रिकोणात कर्णाचा वर्ग हा इतर दोन बाजूंच्या वर्गांच्या बेरजेइतका असतो."
+          }
+        ]
+      }
+    ],
+    "विज्ञान व तंत्रज्ञान - १": [
+      {
+        title: "१. गुरुत्वाकर्षण",
+        qa: [
+          {
+            type: "थोडक्यात उत्तरे",
+            q: "केप्लरचे ग्रहांच्या गतीविषयक तीन नियम लिहा.",
+            a: "१) ग्रहाची कक्षा ही लंबवर्तुळाकार असून सूर्य त्या कक्षेच्या एका नाभीवर असतो.\n२) ग्रहाला सूर्याशी जोडणारी सरळ रेषा समान कालावधीत समान क्षेत्रफळ व्यापन करते.\n३) सूर्याची परिक्रमा करणाऱ्या ग्रहाच्या आवर्तकालाचा वर्ग हा ग्रहाच्या सूर्यापासूनच्या सरासरी अंतराच्या घनाला समानुपाती असतो (T² ∝ r³)."
+          },
+          {
+            type: "शास्त्रीय कारणे",
+            q: "पृथ्वीच्या पृष्ठभागावर g चे मूल्य सर्वत्र सारखे नसते.",
+            a: "पृथ्वी पूर्णपणे गोल नसून ध्रुवांवर चपटी आणि विषुववृत्तावर फुगीर आहे. त्यामुळे पृथ्वीची त्रिज्या ध्रुवांवर कमी आणि विषुववृत्तावर जास्त असते. g ∝ 1/R² असल्यामुळे ध्रुवांवर g चे मूल्य जास्त (9.832 m/s²) तर विषुववृत्तावर कमी (9.78 m/s²) असते."
+          }
+        ]
+      },
+      {
+        title: "२. मूलद्रव्यांचे आवर्ती वर्गीकरण",
+        qa: [
+          {
+            type: "एका वाक्यात उत्तरे",
+            q: "आधुनिक आवर्ती नियम लिहा.",
+            a: "मूलद्रव्यांचे गुणधर्म हे त्यांच्या अणुअंकांचे आवर्तीफल असतात."
+          }
+        ]
+      },
+      {
+        title: "३. रासायनिक अभिक्रिया व समीकरणे",
+        qa: [
+          {
+            type: "टीपा लिहा",
+            q: "ऑक्सिडीकरण व क्षपण अभिक्रिया म्हणजे काय?",
+            a: "ज्या रासायनिक अभिक्रियेत अभिक्रियाकारकाचा ऑक्सिजनशी संयोग होतो किंवा हायड्रोजन निघून जातो तिला ऑक्सिडीकरण म्हणतात; याउलट हायड्रोजन मिळवणे किंवा ऑक्सिजन गमावणे म्हणजे क्षपण होय."
+          }
+        ]
+      }
+    ],
+    "विज्ञान व तंत्रज्ञान - २": [
+      {
+        title: "१. आनुवंशिकता व उत्क्रांती",
+        qa: [
+          {
+            type: "टीपा लिहा",
+            q: "डार्विनचा नैसर्गिक निवडीचा सिद्धांत थोडक्यात लिहा.",
+            a: "सर्व जीव प्रचंड संख्येने पुनरुत्पादन करतात व जगण्यासाठी स्पर्धा करतात. या स्पर्धेत जे जीव अनुकूल बदल घडवून आणतात तेच निसर्गात टिकून राहतात आणि इतरांचा नाश होतो."
+          }
+        ]
+      },
+      {
+        title: "२. सजीवांतील जीवनप्रक्रिया भाग - १",
+        qa: [
+          {
+            type: "एका वाक्यात उत्तरे",
+            q: "ATP चे पूर्ण नाव काय आहे?",
+            a: "Adenosine Triphosphate (अ‍ॅडेनोसिन ट्रायफॉस्फेट)."
+          }
+        ]
+      }
+    ],
+    "इतिहास व राज्यशास्त्र": [
+      {
+        title: "१. इतिहासलेखन : पाश्चात्य परंपरा",
+        qa: [
+          {
+            type: "एका वाक्यात उत्तरे",
+            q: "आधुनिक इतिहासलेखनाचा जनक कोणास म्हटले जाते?",
+            a: "फ्रेंच तत्त्वज्ञ व्हॉल्तेअर यास आधुनिक इतिहासलेखनाचा जनक म्हटले जाते."
+          },
+          {
+            type: "टीपा लिहा",
+            q: "द्वंद्ववाद (Dialectics) स्पष्ट करा.",
+            a: "जॉर्ज विल्हेल्म फ्रेडरिक हेगेल याने मांडलेल्या सिद्धांतानुसार कोणत्याही घटनेचा अर्थ लावण्यासाठी तिची वर्गवारी दोन विरोधी प्रकारांत करावी लागते; या पद्धतीला द्वंद्ववाद म्हणतात."
+          }
+        ]
+      },
+      {
+        title: "राज्यशास्त्र - १. संविधानाची वाटचाल",
+        qa: [
+          {
+            type: "थोडक्यात उत्तरे",
+            q: "मतदारांचे वय २१ वरून १८ वर्षे केल्याचे कोणते परिणाम झाले?",
+            a: "तरुण वर्गाला राजकीय प्रक्रियेत सहभागी होण्याची संधी मिळाली आणि भारतीय लोकशाही अधिक व्यापक व प्रातिनिधिक बनली."
+          }
+        ]
+      }
+    ],
+    "भूगोल": [
+      {
+        title: "१. क्षेत्रभेट",
+        qa: [
+          {
+            type: "थोडक्यात उत्तरे",
+            q: "क्षेत्रभेटीदरम्यान कचऱ्याचे व्यवस्थापन कसे कराल?",
+            a: "कचरा गोळा करण्यासाठी मोठ्या पिशव्या सोबत ठेवणे, ओला व सुका कचरा वेगळा करणे आणि पर्यटनस्थळी कचरा न टाकता कचराकुंडीतच टाकणे."
+          }
+        ]
+      },
+      {
+        title: "२. स्थान व विस्तार",
+        qa: [
+          {
+            type: "एका वाक्यात उत्तरे",
+            q: "भारत आणि ब्राझील या दोन्ही देशांतील शासनप्रणाली कोणत्या प्रकारची आहे?",
+            a: "दोन्ही देशांत लोकशाही प्रजासत्ताक शासनप्रणाली आहे."
+          }
+        ]
+      }
+    ]
+  };
+
+  let syllabusData = loadData();
+  let currentSubject = Object.keys(syllabusData)[0];
+  let currentChapterIndex = 0;
+
+  function loadData() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        return JSON.parse(JSON.stringify(defaultSyllabusData));
+      }
+    }
+    return JSON.parse(JSON.stringify(defaultSyllabusData));
+  }
+
+  function saveData() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(syllabusData));
+  }
+
+  function renderTabs() {
+    const tabsEl = document.getElementById("subjectTabs");
+    tabsEl.innerHTML = "";
+    Object.keys(syllabusData).forEach((subj) => {
+      const btn = document.createElement("button");
+      btn.className = "subject-btn" + (subj === currentSubject ? " active" : "");
+      btn.textContent = subj;
+      btn.onclick = () => {
+        currentSubject = subj;
+        currentChapterIndex = 0;
+        document.getElementById("searchInput").value = "";
+        renderTabs();
+        renderChapters();
+        renderQA();
+      };
+      tabsEl.appendChild(btn);
+    });
+  }
+
+  function renderChapters() {
+    const listEl = document.getElementById("chapterList");
+    document.getElementById("selectedSubjectTitle").textContent = currentSubject + " — धडे";
+    listEl.innerHTML = "";
+
+    const chapters = syllabusData[currentSubject] || [];
+    if (chapters.length === 0) {
+      listEl.innerHTML = '<div class="empty-msg">या विषयात अद्याप धडे नाहीत. वरून नवीन धडा जोडा.</div>';
+      return;
+    }
+
+    chapters.forEach((ch, idx) => {
+      const div = document.createElement("div");
+      div.className = "chapter-item" + (idx === currentChapterIndex ? " active" : "");
+      div.innerHTML = `
+        <span>${ch.title}</span>
+        <span class="badge">${ch.qa.length} प्र.</span>
+      `;
+      div.onclick = () => {
+        currentChapterIndex = idx;
+        document.getElementById("searchInput").value = "";
+        renderChapters();
+        renderQA();
+      };
+      listEl.appendChild(div);
+    });
+  }
+
+  function renderQA() {
+    const qaEl = document.getElementById("qaContainer");
+    const chapters = syllabusData[currentSubject] || [];
+    const chapter = chapters[currentChapterIndex];
+
+    if (!chapter) {
+      document.getElementById("selectedChapterTitle").textContent = "प्रश्नोत्तरे";
+      qaEl.innerHTML = '<div class="empty-msg">कृपया धडा निवडा.</div>';
+      return;
+    }
+
+    document.getElementById("selectedChapterTitle").textContent = chapter.title;
+    const keyword = document.getElementById("searchInput").value.trim().toLowerCase();
+    qaEl.innerHTML = "";
+
+    const filtered = chapter.qa
+      .map((item, originalIdx) => ({ ...item, originalIdx }))
+      .filter(
+        (item) =>
+          item.q.toLowerCase().includes(keyword) ||
+          item.a.toLowerCase().includes(keyword) ||
+          (item.type && item.type.toLowerCase().includes(keyword))
+      );
+
+    if (filtered.length === 0) {
+      qaEl.innerHTML = '<div class="empty-msg">या धड्यात सध्या प्रश्नोत्तरे उपलब्ध नाहीत. खालील फॉर्ममधून जोडा.</div>';
+      return;
+    }
+
+    filtered.forEach((item, displayIdx) => {
+      const box = document.createElement("div");
+      box.className = "qa-box";
+      box.innerHTML = `
+        <div class="qa-top">
+          <div>
+            <span class="q-type">${item.type || "प्रश्न"}</span>
+            <div class="question-text">प्र. ${displayIdx + 1}: ${escapeHTML(item.q)}</div>
+          </div>
+          <button class="btn btn-danger" onclick="deleteQA(${item.originalIdx})">हटवा</button>
+        </div>
+        <div style="margin-top:8px;">
+          <button class="btn btn-secondary" style="padding:5px 12px; font-size:0.83rem;" onclick="toggleSingleAns(this)">उत्तर पहा</button>
+        </div>
+        <div class="answer"><strong>उत्तर:</strong> ${escapeHTML(item.a)}</div>
+      `;
+      qaEl.appendChild(box);
+    });
+  }
+
+  function toggleSingleAns(btn) {
+    const ans = btn.parentElement.nextElementSibling;
+    const isShown = ans.classList.toggle("show");
+    btn.textContent = isShown ? "उत्तर लपवा" : "उत्तर पहा";
+  }
+
+  function toggleAllAnswers(show) {
+    document.querySelectorAll("#qaContainer .answer").forEach((ans) => {
+      ans.classList.toggle("show", show);
+    });
+    document.querySelectorAll("#qaContainer .btn-secondary").forEach((btn) => {
+      btn.textContent = show ? "उत्तर लपवा" : "उत्तर पहा";
+    });
+  }
+
+  function toggleAddChapter() {
+    const box = document.getElementById("addChapterBox");
+    box.style.display = box.style.display === "none" ? "block" : "none";
+  }
+
+  function addNewChapter() {
+    const input = document.getElementById("newChapterName");
+    const title = input.value.trim();
+    if (!title) {
+      alert("कृपया धड्याचे नाव लिहा.");
+      return;
+    }
+    syllabusData[currentSubject].push({ title, qa: [] });
+    currentChapterIndex = syllabusData[currentSubject].length - 1;
+    input.value = "";
+    document.getElementById("addChapterBox").style.display = "none";
+    saveData();
+    renderChapters();
+    renderQA();
+  }
+
+  function addQA() {
+    const type = document.getElementById("qTypeInput").value;
+    const qInput = document.getElementById("questionInput");
+    const aInput = document.getElementById("answerInput");
+    const q = qInput.value.trim();
+    const a = aInput.value.trim();
+
+    if (!q || !a) {
+      alert("कृपया प्रश्न आणि उत्तर दोन्ही भरा.");
+      return;
+    }
+
+    const chapters = syllabusData[currentSubject];
+    if (!chapters || !chapters[currentChapterIndex]) {
+      alert("प्रथम धडा निवडा किंवा तयार करा.");
+      return;
+    }
+
+    chapters[currentChapterIndex].qa.push({ type, q, a });
+    qInput.value = "";
+    aInput.value = "";
+    saveData();
+    renderChapters();
+    renderQA();
+  }
+
+  function deleteQA(index) {
+    if (!confirm("हा प्रश्न कायमचा काढून टाकायचा का?")) return;
+    syllabusData[currentSubject][currentChapterIndex].qa.splice(index, 1);
+    saveData();
+    renderChapters();
+    renderQA();
+  }
+
+  function exportData() {
+    const dataStr = JSON.stringify(syllabusData, null, 2);
+    const blob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "iyatta_10vi_abhyaskram_backup.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function importData(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const imported = JSON.parse(e.target.result);
+        if (typeof imported === "object" && imported !== null) {
+          syllabusData = imported;
+          currentSubject = Object.keys(syllabusData)[0];
+          currentChapterIndex = 0;
+          saveData();
+          renderTabs();
+          renderChapters();
+          renderQA();
+          alert("बॅकअप यशस्वीरित्या लोड झाला!");
+        }
+      } catch (err) {
+        alert("चुकीची JSON फाइल निवडली आहे.");
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  function resetDefaultData() {
+    if (!confirm("तुम्ही जोडलेला नवीन डेटा निघून जाऊन मूळ अभ्यासक्रम येईल. पुढे जायचे का?")) return;
+    localStorage.removeItem(STORAGE_KEY);
+    syllabusData = loadData();
+    currentSubject = Object.keys(syllabusData)[0];
+    currentChapterIndex = 0;
+    renderTabs();
+    renderChapters();
+    renderQA();
+  }
+
+  function escapeHTML(str) {
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  // सुरुवातीला अ‍ॅप रेंडर करा
+  renderTabs();
+  renderChapters();
+  renderQA();
+</script>
+</body>
+</html>
