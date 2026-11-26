@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>इयत्ता १० वी — संपूर्ण अभ्यासक्रम, नवनीत Q&A आणि भूमिती/गणित लॅब</title>
+  <title>इयत्ता १० वी गणित — बीजगणित व भूमिती लॅब</title>
   <style>
     :root {
-      --primary: #1d4ed8;
-      --primary-bg: #eff6ff;
+      --primary: #1e3a8a;
+      --primary-2: #2563eb;
       --accent: #0f766e;
-      --danger: #b91c1c;
-      --danger-bg: #fef2f2;
       --ok: #15803d;
       --ok-bg: #f0fdf4;
+      --err: #b91c1c;
+      --err-bg: #fef2f2;
       --bg: #f1f5f9;
       --card: #ffffff;
+      --border: #cbd5e1;
       --text: #0f172a;
       --muted: #475569;
-      --border: #cbd5e1;
     }
 
     * { box-sizing: border-box; }
@@ -31,7 +31,7 @@
     }
 
     header {
-      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
       color: #fff;
       padding: 14px 16px;
       text-align: center;
@@ -40,7 +40,7 @@
     header h1 { margin: 0; font-size: 1.3rem; }
     header p { margin: 4px 0 0; font-size: 0.85rem; opacity: 0.92; }
 
-    .container {
+    .wrap {
       max-width: 1120px;
       margin: 14px auto 48px;
       padding: 0 12px;
@@ -55,7 +55,7 @@
       box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
     }
 
-    .section-title {
+    .card-title {
       margin: 0 0 10px;
       font-size: 1.05rem;
       color: var(--primary);
@@ -66,41 +66,50 @@
       gap: 8px;
     }
 
-    /* Subjects */
-    .subject-tabs {
+    .top-mode-bar {
       display: flex;
+      flex-wrap: wrap;
       gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 6px;
     }
 
-    .sub-btn {
+    .btn {
+      border: none;
+      border-radius: 8px;
+      padding: 8px 13px;
+      font-weight: 700;
+      font-size: 0.86rem;
+      cursor: pointer;
+    }
+
+    .btn-primary { background: var(--primary-2); color: #fff; }
+    .btn-accent { background: var(--accent); color: #fff; }
+    .btn-dark { background: var(--primary); color: #fff; }
+    .btn-danger { background: var(--err); color: #fff; }
+    .btn-outline { background: #fff; border: 1px solid var(--border); color: var(--text); }
+    .btn-outline.active { background: #eff6ff; border-color: var(--primary-2); color: var(--primary-2); }
+
+    .part-tabs, .chapter-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tab-btn {
       border: 1px solid var(--border);
       background: #fff;
-      color: var(--text);
       padding: 8px 14px;
-      border-radius: 9px;
+      border-radius: 8px;
       font-weight: 700;
-      font-size: 0.9rem;
       cursor: pointer;
-      white-space: nowrap;
     }
 
-    .sub-btn.active {
+    .tab-btn.active {
       background: var(--primary);
       color: #fff;
       border-color: var(--primary);
     }
 
-    /* Chapter selection bar */
-    .chapter-controls {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    select, input[type="text"], input[type="number"], textarea {
+    select, input[type="text"], textarea {
       width: 100%;
       padding: 9px 11px;
       border: 1px solid var(--border);
@@ -110,114 +119,71 @@
       background: #fff;
     }
 
-    .chapter-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      max-height: 130px;
-      overflow-y: auto;
-      padding: 4px;
-      background: #f8fafc;
-      border-radius: 8px;
-      border: 1px solid #e2e8f0;
-    }
-
-    .ch-pill {
-      border: 1px solid var(--border);
-      background: #fff;
-      padding: 6px 10px;
-      border-radius: 7px;
-      font-size: 0.84rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .ch-pill.active {
-      background: var(--primary);
-      color: #fff;
-      border-color: var(--primary);
-    }
-
-    /* Syllabus & Navneet Q&A */
-    .syllabus-box {
+    .points-box {
       background: #f8fafc;
       border-left: 4px solid var(--accent);
-      padding: 10px 12px;
       border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
       margin-bottom: 12px;
-      font-size: 0.92rem;
     }
 
-    .qa-card {
+    .points-box ul { margin: 4px 0 0; padding-left: 18px; }
+    .points-box li { margin-bottom: 4px; }
+
+    .q-item {
       border: 1px solid #e2e8f0;
-      border-left: 4px solid var(--primary);
+      border-left: 4px solid var(--primary-2);
       border-radius: 8px;
       padding: 11px 13px;
       margin-bottom: 10px;
       background: #fafcff;
     }
 
-    .q-badge {
-      display: inline-block;
-      background: var(--primary-bg);
-      color: var(--primary);
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 999px;
-      margin-bottom: 5px;
-    }
-
-    .q-text { font-weight: 700; font-size: 0.96rem; }
-
-    .a-text {
-      display: none;
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px dashed var(--border);
-      color: #064e3b;
-      white-space: pre-line;
-      font-size: 0.93rem;
-    }
-
-    .a-text.show { display: block; }
-
-    /* Buttons */
-    .btn {
-      border: none;
+    .q-head { font-weight: 700; margin-bottom: 6px; }
+    .solved-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
       border-radius: 8px;
-      padding: 8px 13px;
-      font-weight: 700;
-      font-size: 0.85rem;
-      cursor: pointer;
+      padding: 9px 11px;
+      margin-top: 8px;
+      color: #14532d;
+      white-space: pre-line;
+      font-size: 0.92rem;
     }
 
-    .btn-primary { background: var(--primary); color: #fff; }
-    .btn-accent { background: var(--accent); color: #fff; }
-    .btn-outline { background: #fff; border: 1px solid var(--border); color: var(--text); }
-    .btn-danger { background: var(--danger); color: #fff; }
+    .my-ans-box {
+      margin-top: 8px;
+      padding: 9px 11px;
+      border-radius: 8px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+    }
 
-    /* Drawing & Geometry Lab */
-    .lab-toolbar {
+    /* Canvas & Shapes */
+    .canvas-toolbar {
       display: flex;
       flex-wrap: wrap;
       gap: 7px;
-      margin-bottom: 10px;
       align-items: center;
+      margin-bottom: 10px;
     }
 
-    .tool-btn.active {
-      outline: 2px solid var(--primary);
-      background: var(--primary-bg);
-      color: var(--primary);
+    .shape-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 8px;
+      padding: 10px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      margin-bottom: 10px;
     }
 
-    .canvas-wrap {
-      position: relative;
+    .canvas-box {
       border: 2px solid var(--border);
       border-radius: 10px;
-      background: #ffffff;
       overflow: hidden;
+      background: #fff;
       touch-action: none;
     }
 
@@ -228,48 +194,91 @@
       touch-action: none;
     }
 
-    .shape-inputs {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 8px;
-      margin-top: 8px;
-      padding: 10px;
-      background: #f8fafc;
-      border-radius: 8px;
-      border: 1px solid #e2e8f0;
-    }
-
     /* Theorem / Proof Checker */
-    .step-row {
+    .proof-row {
       display: grid;
-      grid-template-columns: 110px 1fr auto;
+      grid-template-columns: 120px 1fr auto;
       gap: 8px;
       margin-bottom: 8px;
       align-items: center;
     }
 
-    .feedback-box {
-      margin-top: 10px;
-      padding: 11px 13px;
-      border-radius: 8px;
-      font-size: 0.92rem;
-    }
-
-    .feedback-ok {
+    .msg-ok {
       background: var(--ok-bg);
       border: 1px solid #86efac;
       color: var(--ok);
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin-top: 8px;
     }
 
-    .feedback-err {
-      background: var(--danger-bg);
+    .msg-err {
+      background: var(--err-bg);
       border: 1px solid #fca5a5;
-      color: var(--danger);
+      color: var(--err);
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin-top: 8px;
+      white-space: pre-line;
+    }
+
+    /* Formulas Grid */
+    .formula-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 10px;
+    }
+
+    .f-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 12px;
+      background: #f8fafc;
+    }
+
+    .f-card h4 { margin: 0 0 6px; color: var(--primary); font-size: 0.95rem; }
+    .f-card p { margin: 3px 0; font-size: 0.89rem; }
+
+    /* Board Answer Sheet Modal / Panel */
+    .board-sheet {
+      border: 2px solid #1e293b;
+      border-radius: 8px;
+      padding: 14px;
+      background: #fffef7;
+    }
+
+    .board-header {
+      border-bottom: 2px solid #1e293b;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-weight: 700;
+    }
+
+    .board-lines {
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 29px,
+        #cbd5e1 30px
+      );
+      border-left: 3px solid #ef4444;
+      padding-left: 10px;
+    }
+
+    .board-lines textarea {
+      background: transparent;
+      border: none;
+      line-height: 30px;
+      min-height: 240px;
+      resize: vertical;
     }
 
     @media (max-width: 640px) {
-      .step-row { grid-template-columns: 1fr; }
-      .chapter-controls { grid-template-columns: 1fr; }
+      .proof-row { grid-template-columns: 1fr; }
       canvas { height: 300px; }
     }
   </style>
@@ -277,567 +286,562 @@
 <body>
 
 <header>
-  <h1>इयत्ता १० वी — संपूर्ण अभ्यासक्रम, नवनीत प्रश्नोत्तरे आणि गणित/भूमिती लॅब</h1>
-  <p>सर्व विषय (A–Z धडे) • पेन्सिल/बोटाने लेखन • त्रिकोण व चौकोन रेखाटन • प्रमेय तपासणी व दुरुस्ती</p>
+  <h1>इयत्ता १० वी गणित — बीजगणित व भूमिती अभ्यासक्रम व लॅब</h1>
+  <p>पाठ्यपुस्तक मुद्दे • सोडवलेली उत्तरे • प्रश्न तुमचे-उत्तर आमचे • त्रिकोण व चौकोन • प्रमेय दुरुस्ती • बोर्ड उत्तरपत्रिका</p>
 </header>
 
-<div class="container">
+<div class="wrap">
 
-  <!-- १. विषय निवडा -->
+  <!-- मुख्य बटणे: १) प्रश्न तुमचे उत्तर आमचे  २) १० वी बोर्ड उत्तरपत्रिका -->
   <div class="card">
-    <div class="section-title"><span>१. विषय निवडा</span></div>
-    <div class="subject-tabs" id="subjectTabs"></div>
+    <div class="card-title">
+      <span>मुख्य साधने व मोड्स</span>
+      <div class="top-mode-bar">
+        <button class="btn btn-accent" id="btnMode1" onclick="toggleSelfPracticeMode()">
+          १. प्रश्न तुमचे, उत्तर आमचे
+        </button>
+        <button class="btn btn-dark" id="btnMode2" onclick="toggleBoardSheet()">
+          २. १० वी चे बोर्डचे उत्तरपत्रिका
+        </button>
+        <button class="btn btn-outline" onclick="scrollToSection('formulasCard')">संपूर्ण सूत्रे (बीजगणित/भूमिती)</button>
+      </div>
+    </div>
+    <p style="margin:0; font-size:0.88rem; color:var(--muted);">
+      <b>बटण १ (प्रश्न तुमचे, उत्तर आमचे):</b> पाठ्यपुस्तक/सरावातील प्रश्न दिले आहेत; उत्तर तुम्ही लिहा आणि सोडवलेले उत्तर तपासून पडताळा.<br/>
+      <b>बटण २ (१० वी बोर्ड उत्तरपत्रिका):</b> बोर्ड परीक्षेच्या उत्तरपत्रिकेसारखी रचना (प्रश्न क्रमांक, गुण, मार्जिन व ओळी) येथे मिळते.
+    </p>
   </div>
 
-  <!-- २. A to Z धडा निवड -->
-  <div class="card">
-    <div class="section-title">
-      <span id="currentSubjectHeading">२. धडा निवडा</span>
-      <span id="chapterCountLabel" style="font-size:0.85rem; color:var(--muted);"></span>
-    </div>
-    <div class="chapter-controls">
-      <select id="chapterDropdown" onchange="onDropdownChange()"></select>
-      <button class="btn btn-outline" onclick="toggleAddChapterForm()">+ नवीन धडा जोडा</button>
-    </div>
-
-    <div id="addChapterForm" style="display:none; margin-bottom:10px; padding:10px; background:#f8fafc; border-radius:8px; border:1px solid var(--border);">
-      <div style="display:flex; gap:8px; flex-wrap:wrap;">
-        <input type="text" id="newChapterTitle" placeholder="नवीन धड्याचे नाव (उदा. धडा १०: वर्तुळ)" style="flex:1; min-width:200px;" />
-        <button class="btn btn-primary" onclick="saveNewChapter()">धडा जोडा</button>
+  <!-- बटण २ विभाग: १० वी बोर्ड उत्तरपत्रिका -->
+  <div class="card" id="boardSheetCard" style="display:none;">
+    <div class="card-title">
+      <span>१० वी बोर्ड परीक्षेची उत्तरपत्रिका (सराव नमुना)</span>
+      <div style="display:flex; gap:6px;">
+        <button class="btn btn-outline" onclick="clearBoardSheet()">उत्तरपत्रिका साफ करा</button>
+        <button class="btn btn-primary" onclick="window.print()">प्रिंट / PDF</button>
       </div>
     </div>
-
-    <div class="chapter-pills" id="chapterPills"></div>
-  </div>
-
-  <!-- ३. पाठ्यांश व नवनीत प्रश्नोत्तरे -->
-  <div class="card">
-    <div class="section-title">
-      <span id="activeChapterTitle">धडा</span>
-      <div style="display:flex; gap:6px; flex-wrap:wrap;">
-        <button class="btn btn-outline" onclick="toggleAllAnswers(true)">सर्व उत्तरे दाखवा</button>
-        <button class="btn btn-outline" onclick="toggleAllAnswers(false)">सर्व उत्तरे लपवा</button>
+    <div class="board-sheet">
+      <div class="board-header">
+        <span>विषय: गणित (भाग १ / भाग २)</span>
+        <span>गुण: ४०</span>
+        <span>बैठक क्र.: <input type="text" id="seatNo" placeholder="उदा. M123456" style="width:130px; display:inline-block; padding:4px 8px;" /></span>
       </div>
-    </div>
-
-    <div class="syllabus-box" id="syllabusSummary"></div>
-
-    <input type="text" id="qaSearch" placeholder="या धड्यातील प्रश्न किंवा मुद्दा शोधा..." oninput="renderQA()" style="margin-bottom:10px;" />
-    <div id="qaList"></div>
-
-    <hr style="border:none; border-top:1px solid #e2e8f0; margin:14px 0;" />
-    <div style="font-weight:700; margin-bottom:8px; color:var(--primary);">या धड्यात नवीन प्रश्न-उत्तर जोडा</div>
-    <div style="display:grid; gap:8px;">
-      <div style="display:flex; gap:8px; flex-wrap:wrap;">
-        <select id="newQType" style="max-width:220px;">
-          <option value="नवनीत — थोडक्यात उत्तरे">नवनीत — थोडक्यात उत्तरे</option>
-          <option value="नवनीत — कारणे लिहा">नवनीत — कारणे लिहा</option>
-          <option value="नवनीत — रिकाम्या जागा">नवनीत — रिकाम्या जागा</option>
-          <option value="नवनीत — दीर्घोत्तरी">नवनीत — दीर्घोत्तरी</option>
-          <option value="प्रमेय / गणित">प्रमेय / गणित</option>
-        </select>
-        <input type="text" id="newQText" placeholder="प्रश्न लिहा..." style="flex:1; min-width:200px;" />
+      <div style="display:flex; gap:8px; margin-bottom:8px; flex-wrap:wrap;">
+        <input type="text" id="boardQNo" placeholder="प्रश्न क्र. (उदा. प्र. १ (अ) / प्र. ४)" style="max-width:220px;" />
+        <input type="text" id="boardSubPart" placeholder="उपप्रश्न / गुण (उदा. (१) २ गुण)" style="max-width:220px;" />
       </div>
-      <textarea id="newAText" placeholder="नवनीत शैलीतील मुद्देसूद उत्तर लिहा..."></textarea>
-      <div><button class="btn btn-accent" onclick="addQAItem()">प्रश्न-उत्तर सेव्ह करा</button></div>
+      <div class="board-lines">
+        <textarea id="boardAnswerArea" placeholder="येथे बोर्ड परीक्षेच्या पद्धतीने पायरी-नि-पायरी गणित किंवा प्रमेय लिहा..."></textarea>
+      </div>
     </div>
   </div>
 
-  <!-- ४. गणित / भूमिती सोडवण्याचा कॅनव्हास (पेन्सिल/बोटाने लेखन + त्रिकोण व चौकोन) -->
+  <!-- १. बीजगणित / भूमिती व धडा निवड -->
   <div class="card">
-    <div class="section-title">
-      <span>४. गणित व भूमिती सोडवण्याचा फलक (बोट / पेन्सिल + त्रिकोण व चौकोन)</span>
+    <div class="card-title"><span>भाग व धडा निवडा</span></div>
+    <div class="part-tabs" id="partTabs" style="margin-bottom:10px;"></div>
+    <select id="chapterSelect" onchange="onChapterSelect()" style="margin-bottom:10px;"></select>
+    <div class="chapter-list" id="chapterButtons"></div>
+  </div>
+
+  <!-- २. धड्याचा मुद्दा-नि-मुद्दा अभ्यासक्रम व सोडवलेले प्रश्न / प्रश्न तुमचे उत्तर आमचे -->
+  <div class="card">
+    <div class="card-title">
+      <span id="chapterHeading">धडा</span>
+      <span id="modeBadge" style="font-size:0.82rem; font-weight:700; color:var(--accent);">मोड: सोडवलेले प्रश्नोत्तरे</span>
+    </div>
+
+    <div class="points-box">
+      <strong>पाठ्यपुस्तकातील महत्त्वाचे मुद्दे (एक ना एक पॉइंट):</strong>
+      <ul id="chapterPoints"></ul>
+    </div>
+
+    <div id="questionsContainer"></div>
+  </div>
+
+  <!-- ३. पेन्सिल / बोटाने गणित सोडवणे + त्रिकोण व चौकोन -->
+  <div class="card" id="canvasCard">
+    <div class="card-title">
+      <span>गणित सोडवण्याचा फलक (बोट / पेन्सिल + त्रिकोण व चौकोन)</span>
       <button class="btn btn-danger" onclick="clearCanvas()">फलक पुसा</button>
     </div>
 
-    <div class="lab-toolbar">
-      <button class="btn btn-outline tool-btn active" id="toolPen" onclick="setTool('pen')">पेन्सिल / बोट</button>
-      <button class="btn btn-outline tool-btn" id="toolEraser" onclick="setTool('eraser')">खोडरबर</button>
-      <button class="btn btn-outline tool-btn" id="toolTriangle" onclick="setTool('triangle')">त्रिकोण (△)</button>
-      <button class="btn btn-outline tool-btn" id="toolQuad" onclick="setTool('quad')">चौकोन (□)</button>
-      <label style="font-size:0.84rem; font-weight:600;">रंग:
-        <input type="color" id="strokeColor" value="#1d4ed8" style="vertical-align:middle;" />
-      </label>
-      <label style="font-size:0.84rem; font-weight:600;">जाडी:
-        <input type="range" id="strokeWidth" min="1" max="10" value="3" style="vertical-align:middle; width:80px;" />
-      </label>
+    <div class="canvas-toolbar">
+      <button class="btn btn-outline active" id="tPen" onclick="setCanvasTool('pen')">पेन्सिल / बोट</button>
+      <button class="btn btn-outline" id="tEraser" onclick="setCanvasTool('eraser')">खोडरबर</button>
+      <button class="btn btn-outline" id="tTri" onclick="setCanvasTool('triangle')">त्रिकोण (△)</button>
+      <button class="btn btn-outline" id="tQuad" onclick="setCanvasTool('quad')">चौकोन (□)</button>
+      <label style="font-size:0.84rem; font-weight:600;">रंग: <input type="color" id="penColor" value="#1e3a8a" /></label>
+      <label style="font-size:0.84rem; font-weight:600;">जाडी: <input type="range" id="penSize" min="1" max="10" value="3" style="width:75px;" /></label>
     </div>
 
-    <div class="shape-inputs">
+    <div class="shape-grid">
       <div>
-        <label style="font-size:0.78rem; font-weight:700;">आकाराचे नाव / कोन-बाजू</label>
-        <input type="text" id="shapeLabel" value="△ ABC / □ PQRS" />
+        <label style="font-size:0.78rem; font-weight:700;">आकृतीचे नाव</label>
+        <input type="text" id="shapeName" value="△ ABC" />
       </div>
       <div>
-        <label style="font-size:0.78rem; font-weight:700;">त्रिकोण प्रकार (△ साठी)</label>
-        <select id="triType">
-          <option value="general">सर्वसाधारण त्रिकोण</option>
+        <label style="font-size:0.78rem; font-weight:700;">त्रिकोण प्रकार</label>
+        <select id="triKind">
           <option value="right">काटकोन त्रिकोण (90°)</option>
           <option value="equilateral">समभुज त्रिकोण</option>
+          <option value="isosceles">समद्विभुज त्रिकोण</option>
         </select>
       </div>
       <div>
-        <label style="font-size:0.78rem; font-weight:700;">चौकोन प्रकार (□ साठी)</label>
-        <select id="quadType">
-          <option value="rect">आयत / चौकोन</option>
+        <label style="font-size:0.78rem; font-weight:700;">चौकोन प्रकार</label>
+        <select id="quadKind">
+          <option value="rect">आयत</option>
           <option value="square">चौरस</option>
           <option value="parallelogram">समांतरभुज चौकोन</option>
         </select>
       </div>
       <div style="display:flex; align-items:flex-end;">
-        <button class="btn btn-primary" style="width:100%;" onclick="stampSelectedShape()">आकृती फलकावर काढा</button>
+        <button class="btn btn-primary" style="width:100%;" onclick="drawPresetShape()">आकृती काढा</button>
       </div>
     </div>
 
-    <div class="canvas-wrap" style="margin-top:10px;">
-      <canvas id="mathCanvas"></canvas>
+    <div class="canvas-box">
+      <canvas id="solveCanvas"></canvas>
     </div>
-    <p style="font-size:0.82rem; color:var(--muted); margin:6px 0 0;">
-      टीप: Apple Pencil किंवा बोटाने थेट लिहिता येते; तसेच 'त्रिकोण' किंवा 'चौकोन' निवडून ओढून किंवा 'आकृती फलकावर काढा' बटणाने अचूक आकृती काढता येते.
-    </p>
   </div>
 
-  <!-- ५. प्रमेय व गणित पायरी तपासणी आणि दुरुस्ती (Correction) -->
+  <!-- ४. प्रमेय / गणित बरोबर की चूक व कुठे चुकले याची दुरुस्ती (Correction) -->
   <div class="card">
-    <div class="section-title">
-      <span>५. प्रमेय व गणित पायरी तपासणी आणि दुरुस्ती (Theorem & Step Checker)</span>
+    <div class="card-title"><span>प्रमेय व गणित तपासणी — बरोबर/चूक आणि दुरुस्ती (Correction)</span></div>
+
+    <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+      <select id="proofTopic" style="max-width:340px;" onchange="resetProofSteps()">
+        <option value="bpt">प्रमेय: प्रमाणाचे मूलभूत प्रमेय (BPT)</option>
+        <option value="pythagoras">प्रमेय: पायथागोरसचे प्रमेय</option>
+        <option value="tangent">प्रमेय: स्पर्शिका-त्रिज्या प्रमेय (90°)</option>
+        <option value="quad_diag">गुणधर्म: समांतरभुज चौकोनाचे कर्ण दुभागतात</option>
+        <option value="quad_angles">गुणधर्म: चौकोनाच्या कोनांची बेरीज 360°</option>
+        <option value="quadratic_roots">बीजगणित: वर्गसमीकरण सूत्र (x = [-b ± √(b²-4ac)] / 2a)</option>
+      </select>
+      <button class="btn btn-outline" onclick="addProofRow()">+ पायरी जोडा</button>
+      <button class="btn btn-accent" onclick="verifyProof()">तपासा व दुरुस्ती दाखवा</button>
     </div>
 
-    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:8px; margin-bottom:10px;">
-      <div>
-        <label style="font-size:0.8rem; font-weight:700;">प्रमेय / उदाहरणाचा प्रकार निवडा</label>
-        <select id="theoremSelect" onchange="loadTheoremTemplate()">
-          <option value="bpt">प्रमाणाचे मूलभूत प्रमेय (BPT)</option>
-          <option value="pythagoras">पायथागोरसचे प्रमेय</option>
-          <option value="quad_sum">चौकोनाच्या कोनांच्या मापांची बेरीज (360°)</option>
-          <option value="quadratic">वर्गसमीकरण सूत्र (x = [-b ± √(b²-4ac)] / 2a)</option>
-        </select>
+    <div id="proofRows"></div>
+    <div id="proofFeedback"></div>
+  </div>
+
+  <!-- ५. संपूर्ण गणित सूत्रे (बीजगणित व भूमिती) -->
+  <div class="card" id="formulasCard">
+    <div class="card-title"><span>संपूर्ण गणित सूत्रे (बीजगणित व भूमिती)</span></div>
+    <div class="formula-grid">
+      <div class="f-card">
+        <h4>बीजगणित — रेषीय व वर्गसमीकरणे</h4>
+        <p>• सामान्य रूप: ax + by + c = 0</p>
+        <p>• क्रेमर नियम: x = Dx / D, y = Dy / D (D ≠ 0)</p>
+        <p>• वर्गसमीकरण: ax² + bx + c = 0 (a ≠ 0)</p>
+        <p>• विवेचक (Δ) = b² - 4ac</p>
+        <p>• सूत्र: x = [-b ± √(b² - 4ac)] / (2a)</p>
       </div>
-      <div style="display:flex; align-items:flex-end; gap:6px;">
-        <button class="btn btn-outline" onclick="addProofStep()">+ नवीन पायरी जोडा</button>
-        <button class="btn btn-primary" onclick="checkProofSteps()">बरोबर/चूक व दुरुस्ती तपासा</button>
+      <div class="f-card">
+        <h4>बीजगणित — अंकगणिती श्रेढी व संभाव्यता</h4>
+        <p>• सामान्य फरक: d = tₙ₊₁ - tₙ</p>
+        <p>• n वे पद: tₙ = a + (n - 1)d</p>
+        <p>• पहिल्या n पदांची बेरीज: Sₙ = (n/2)[2a + (n - 1)d]</p>
+        <p>• संभाव्यता: P(A) = n(A) / n(S)</p>
+      </div>
+      <div class="f-card">
+        <h4>भूमिती — त्रिकोण व पायथागोरस</h4>
+        <p>• त्रिकोणाचे क्षेत्रफळ = (1/2) × पाया × उंची</p>
+        <p>• BPT: रेषा एका बाजूला समांतर तर AP/PB = AQ/QC</p>
+        <p>• पायथागोरस: कर्ण² = पाया² + उंची²</p>
+        <p>• काटकोन त्रिकोणात 30°-60°-90°: 30° समोरील बाजू = (1/2)×कर्ण, 60° समोरील बाजू = (√3/2)×कर्ण</p>
+      </div>
+      <div class="f-card">
+        <h4>भूमिती — चौकोन, वर्तुळ व घनफळ</h4>
+        <p>• चौकोनाच्या कोनांची बेरीज = 360°</p>
+        <p>• आयताचे क्षेत्रफळ = लांबी × रुंदी; चौरसाचे क्षेत्रफळ = बाजू²</p>
+        <p>• वर्तुळाचा परीघ = 2πr; क्षेत्रफळ = πr²</p>
+        <p>• दंडगोल घनफळ = πr²h; शंकू घनफळ = (1/3)πr²h; गोल घनफळ = (4/3)πr³</p>
       </div>
     </div>
-
-    <div id="theoremGuide" class="syllabus-box" style="margin-bottom:10px;"></div>
-    <div id="proofStepsContainer"></div>
-    <div id="proofResult"></div>
   </div>
 
 </div>
 
 <script>
-  const STORAGE_KEY = "maharashtra_10th_complete_lab_v1";
-
-  const THEOREM_RULES = {
-    bpt: {
-      title: "प्रमाणाचे मूलभूत प्रमेय (Basic Proportionality Theorem)",
-      expected: "त्रिकोणाच्या एका बाजूला समांतर रेषा उरलेल्या दोन बाजूंना भिन्न बिंदूंत छेदल्यास ती त्या बाजूंना एकाच प्रमाणात (AD/DB = AE/EC) विभागते.",
-      keywords: ["समांतर", "प्रमाण", "ad", "db", "ae", "ec", "छेद"],
-      fix: "तपासा: रेषा त्रिकोणाच्या एका बाजूला 'समांतर' आहे का आणि गुणोत्तर AD/DB = AE/EC असे बरोबर लिहिले आहे का. (असमान गुणोत्तर किंवा समांतरतेची अट चुकली असल्यास तिथे दुरुस्ती करा.)"
-    },
-    pythagoras: {
-      title: "पायथागोरसचे प्रमेय (Pythagoras Theorem)",
-      expected: "काटकोन त्रिकोणात कर्णाचा वर्ग = उरलेल्या दोन बाजूंच्या वर्गांची बेरीज (AC² = AB² + BC²).",
-      keywords: ["काटकोन", "कर्ण", "वर्ग", "बेरीज", "ac", "ab", "bc"],
-      fix: "तपासा: त्रिकोण 'काटकोन' (90°) आहे का आणि बाजूंचा वर्ग (²) तसेच बेरीज (+) बरोबर घेतली आहे का; गुणाकार किंवा वजाबाकी झाली असल्यास दुरुस्त करा."
-    },
-    quad_sum: {
-      title: "चौकोनाच्या चारही कोनांच्या मापांची बेरीज",
-      expected: "चौकोनाच्या चारही कोनांच्या मापांची बेरीज 360° असते (∠A + ∠B + ∠C + ∠D = 360°).",
-      keywords: ["चौकोन", "कोन", "360", "बेरीज"],
-      fix: "तपासा: चौकोनाच्या कोनांची बेरीज 180° (त्रिकोणाची बेरीज) ऐवजी 360° घेतली आहे का आणि दिलेले कोन बरोबर बेरजेत टाकले आहेत का."
-    },
-    quadratic: {
-      title: "वर्गसमीकरण सूत्र (Quadratic Formula)",
-      expected: "ax² + bx + c = 0 साठी विवेचक Δ = b² - 4ac आणि x = (-b ± √Δ) / (2a).",
-      keywords: ["b²", "4ac", "2a", "विवेचक", "वर्गसमीकरण"],
-      fix: "तपासा: b² - 4ac मध्ये चिन्हे (+ / -) बरोबर आहेत का आणि छेदात 2a (फक्त a नाही) लिहिले आहे का."
-    }
+  const MATHS_SYLLABUS = {
+    "गणित - भाग १ (बीजगणित)": [
+      {
+        title: "१. दोन चलांतील रेषीय समीकरणे",
+        points: [
+          "ax + by + c = 0 हे दोन चलांतील रेषीय समीकरणाचे सामान्य रूप आहे.",
+          "एकसामयिक रेषीय समीकरणे सोडवण्यासाठी सहगुणक समान करून बेरीज किंवा वजाबाकी करतात.",
+          "निश्चयक (Determinant) व क्रेमरची पद्धत: x = Dx / D, y = Dy / D (D ≠ 0)."
+        ],
+        qa: [
+          {
+            q: "2x + 3y = 12 आणि x - y = 1 ही एकसामयिक समीकरणे सोडवा.",
+            a: "समीकरण (२) ला 2 ने गुणून: 2x - 2y = 2  --- (३)\nसमीकरण (१) मधून (३) वजा करू:\n(2x + 3y) - (2x - 2y) = 12 - 2\n5y = 10  ⇒  y = 2\ny = 2 हे समीकरण (२) मध्ये ठेवून: x - 2 = 1  ⇒  x = 3\nउकल: (x, y) = (3, 2)."
+          },
+          {
+            q: "निश्चयकाची किंमत काढा: | 5  3 | / | -7  -4 |",
+            a: "निश्चयकाची किंमत = (5 × -4) - (3 × -7)\n= -20 - (-21)\n= -20 + 21 = 1."
+          }
+        ]
+      },
+      {
+        title: "२. वर्गसमीकरणे",
+        points: [
+          "ax² + bx + c = 0 हे वर्गसमीकरणाचे सामान्य रूप आहे (a ≠ 0).",
+          "अवयव पद्धत, पूर्ण वर्ग पद्धत आणि सूत्र पद्धतीने मुळे काढतात.",
+          "विवेचक Δ = b² - 4ac वरून मुळांचे स्वरूप ठरते (Δ > 0, Δ = 0, Δ < 0)."
+        ],
+        qa: [
+          {
+            q: "x² + 5x + 6 = 0 हे वर्गसमीकरण अवयव पद्धतीने सोडवा.",
+            a: "गुणाकार +6 आणि बेरीज +5 येणारे दोन अवयव +3 आणि +2 आहेत.\nx² + 3x + 2x + 6 = 0\nx(x + 3) + 2(x + 3) = 0\n(x + 3)(x + 2) = 0\nx + 3 = 0 किंवा x + 2 = 0\nम्हणून x = -3 किंवा x = -2."
+          }
+        ]
+      },
+      {
+        title: "३. अंकगणिती श्रेढी",
+        points: [
+          "दोन सलग पदांतील फरक (tₙ₊₁ - tₙ) स्थिर असल्यास ती अंकगणिती श्रेढी असते.",
+          "n वे पद: tₙ = a + (n - 1)d.",
+          "पहिल्या n पदांची बेरीज: Sₙ = (n/2)[2a + (n - 1)d]."
+        ],
+        qa: [
+          {
+            q: "अंकगणिती श्रेढी 2, 7, 12, 17, ... चे 10 वे पद काढा.",
+            a: "येथे a = 2, d = 7 - 2 = 5, n = 10.\ntₙ = a + (n - 1)d\nt₁₀ = 2 + (10 - 1) × 5\nt₁₀ = 2 + 9 × 5 = 2 + 45 = 47."
+          }
+        ]
+      },
+      {
+        title: "४. अर्थनियोजन",
+        points: [
+          "GST (वस्तू व सेवा कर), CGST व SGST/UTGST विभागणी.",
+          "करपात्र मूल्य, बीजक (Invoice) आणि शेअर व लाभांश (Dividend)."
+        ],
+        qa: [
+          {
+            q: "एखाद्या वस्तूवर 18% GST असल्यास CGST आणि SGST चा दर किती असेल?",
+            a: "CGST = 18% / 2 = 9% आणि SGST = 18% / 2 = 9%."
+          }
+        ]
+      },
+      {
+        title: "५. संभाव्यता",
+        points: [
+          "नमुना अवकाश (S) आणि नमुना घटक संख्या n(S).",
+          "घटनेची संभाव्यता: P(A) = n(A) / n(S), जेथे 0 ≤ P(A) ≤ 1."
+        ],
+        qa: [
+          {
+            q: "एक नाणे फेकले असता छाप (Head) मिळण्याची संभाव्यता किती?",
+            a: "S = {H, T}, n(S) = 2. छाप येण्याची घटना A = {H}, n(A) = 1.\nP(A) = n(A) / n(S) = 1 / 2 = 0.5."
+          }
+        ]
+      },
+      {
+        title: "६. सांख्यिकी",
+        points: [
+          "वर्गीकृत वारंवारता वितरणाचा मध्य (Mean): प्रत्यक्ष पद्धत, गृहीत मध्य पद्धत, विचलन पद्धत.",
+          "मध्यक (Median) आणि बहुलक (Mode) काढण्याची सूत्रे व स्तंभालेख."
+        ],
+        qa: [
+          {
+            q: "मध्य (x̄), मध्यक (M) आणि बहुलक (Z) यांतील अनुभवजन्य संबंध लिहा.",
+            a: "बहुलक (Z) = 3 × मध्यक (M) - 2 × मध्य (x̄)."
+          }
+        ]
+      }
+    ],
+    "गणित - भाग २ (भूमिती)": [
+      {
+        title: "१. समरूपता",
+        points: [
+          "दोन त्रिकोणांच्या क्षेत्रफळांचे गुणोत्तर त्यांच्या संगत पाया व उंचीच्या गुणाकाराच्या गुणोत्तराइतके असते.",
+          "प्रमाणाचे मूलभूत प्रमेय (BPT) व त्याचा व्यत्यास.",
+          "समरूप त्रिकोणांच्या क्षेत्रफळांचे प्रमेय: A(△ABC)/A(△PQR) = (AB/PQ)²."
+        ],
+        qa: [
+          {
+            q: "ΔABC मध्ये DE || BC असून AD = 6, DB = 9, AE = 8 तर EC काढा.",
+            a: "प्रमाणाच्या मूलभूत प्रमेयानुसार:\nAD / DB = AE / EC\n6 / 9 = 8 / EC\n6 × EC = 8 × 9 = 72\nEC = 72 / 6 = 12."
+          }
+        ]
+      },
+      {
+        title: "२. पायथागोरसचे प्रमेय",
+        points: [
+          "काटकोन त्रिकोणात कर्णाचा वर्ग हा इतर दोन बाजूंच्या वर्गांच्या बेरजेइतका असतो.",
+          "पायथागोरसची त्रिकुटे आणि अपोलोनियस प्रमेय."
+        ],
+        qa: [
+          {
+            q: "काटकोन ΔXYZ मध्ये ∠Y = 90°, XY = 6, YZ = 8 तर XZ काढा.",
+            a: "पायथागोरसच्या प्रमेयानुसार:\nXZ² = XY² + YZ²\nXZ² = 6² + 8² = 36 + 64 = 100\nXZ = √100 = 10."
+          }
+        ]
+      },
+      {
+        title: "३. वर्तुळ",
+        points: [
+          "स्पर्शिका-त्रिज्या प्रमेय: वर्तुळाच्या कोणत्याही बिंदूतून जाणारी स्पर्शिका त्या बिंदूतून जाणाऱ्या त्रिज्येस लंब असते.",
+          "बाह्य बिंदूतून वर्तुळाला काढलेले स्पर्शिकाखंड समान लांबीचे असतात.",
+          "आंतरलिखित कोन प्रमेय आणि चक्रीय चौकोनाचे गुणधर्म."
+        ],
+        qa: [
+          {
+            q: "चक्रीय चौकोनाच्या संमुख कोनांची बेरीज किती असते?",
+            a: "चक्रीय चौकोनाच्या संमुख कोनांची बेरीज 180° असते."
+          }
+        ]
+      },
+      {
+        title: "४. भौमितिक रचना",
+        points: [
+          "दिलेल्या रेषाखंडाचा लंबदुभाजक आणि कोनाचा दुभाजक काढणे.",
+          "दिलेल्या त्रिकोणाशी समरूप त्रिकोण काढणे आणि वर्तुळास स्पर्शिका काढणे."
+        ],
+        qa: [
+          {
+            q: "वर्तुळाबाहेरील बिंदूतून वर्तुळाला जास्तीत जास्त किती स्पर्शिका काढता येतात?",
+            a: "वर्तुळाबाहेरील एका बिंदूतून वर्तुळाला जास्तीत जास्त दोन स्पर्शिका काढता येतात."
+          }
+        ]
+      },
+      {
+        title: "५. निर्देशक भूमिती",
+        points: [
+          "अंतर सूत्र: d(A,B) = √[(x₂ - x₁)² + (y₂ - y₁)²].",
+          "विभाजन सूत्र व मध्यबिंदू सूत्र: x = (x₁ + x₂)/2, y = (y₁ + y₂)/2.",
+          "रेषेचा उतार (Slope): m = (y₂ - y₁) / (x₂ - x₁) = tan θ."
+        ],
+        qa: [
+          {
+            q: "A(1, 3) आणि B(4, 7) या दोन बिंदूंमधील अंतर काढा.",
+            a: "d(A,B) = √[(4 - 1)² + (7 - 3)²]\n= √[3² + 4²] = √[9 + 16] = √25 = 5."
+          }
+        ]
+      },
+      {
+        title: "६. त्रिकोणमिती",
+        points: [
+          "sin θ, cos θ, tan θ गुणोत्तरे व मूलभूत नित्यसमानता: sin²θ + cos²θ = 1, 1 + tan²θ = sec²θ, 1 + cot²θ = cosec²θ.",
+          "उन्नत कोन (Angle of Elevation) व अवनत कोन (Angle of Depression)."
+        ],
+        qa: [
+          {
+            q: "जर sin θ = 3/5 तर cos θ ची किंमत काढा (θ लघुकोन).",
+            a: "sin²θ + cos²θ = 1\n(3/5)² + cos²θ = 1\n9/25 + cos²θ = 1\ncos²θ = 1 - 9/25 = 16/25\ncos θ = 4/5."
+          }
+        ]
+      },
+      {
+        title: "७. मोजमापन (Mensuration)",
+        points: [
+          "दंडगोल, शंकू, गोल व अर्धगोल यांचे पृष्ठफळ आणि घनफळ.",
+          "कंसाची लांबी व वर्तुळपाकळीचे क्षेत्रफळ: A = (θ/360) × πr²."
+        ],
+        qa: [
+          {
+            q: "त्रिज्या r असलेल्या गोलाचे घनफळ व पृष्ठफळ लिहा.",
+            a: "गोलाचे घनफळ = (4/3)πr³ आणि पृष्ठफळ = 4πr²."
+          }
+        ]
+      }
+    ]
   };
 
-  const initialData = {
-    "मराठी (कुमारभारती)": {
-      chapters: [
-        {
-          title: "A. १. जय जय हे भारत देशा",
-          syllabus: "पाठ्यांश: नव्या युगाचे स्वागत, शक्ती-युक्तीचा संगम आणि विश्वबंधुत्वाचा संदेश देणारे देशभक्तीपर गीत.",
-          qa: [
-            { type: "नवनीत — थोडक्यात उत्तरे", q: "भारत देशाचे कोणते गुण कवीने वर्णन केले आहेत?", a: "नव्या युगाचे स्वागत करणारा, शक्ती व युक्तीचा संगम घडवणारा आणि सर्व भेदांच्या पलीकडे जाऊन मानवतेचा संदेश देणारा भारत कवीने रेखाटला आहे." },
-            { type: "नवनीत — कारणे लिहा", q: "प्रत्येक भारतीयाने देशासाठी एकजुटीने कार्य का करावे?", a: "देशाची प्रगती, शांतता आणि सामाजिक समता टिकवण्यासाठी सर्व भेद विसरून एकजुटीने कार्य करणे आवश्यक आहे." }
-          ]
-        },
-        {
-          title: "B. २. बोलतो मराठी",
-          syllabus: "पाठ्यांश: मराठी भाषेतील शब्दांची व्युत्पत्ती, बोलीभाषांचे महत्त्व आणि भाषेचा जतन-संवर्धन प्रवास.",
-          qa: [
-            { type: "नवनीत — थोडक्यात उत्तरे", q: "शब्दांची व्युत्पत्ती अभ्यासण्याचे महत्त्व स्पष्ट करा.", a: "शब्दाची व्युत्पत्ती समजल्यास मूळ अर्थ, भाषेचा ऐतिहासिक प्रवास आणि अचूक शब्दवापर यांचा उलगडा होतो." }
-          ]
-        },
-        {
-          title: "C. ३. आजी : कुटुंबाचं आगळ",
-          syllabus: "पाठ्यांश: एकत्र कुटुंबपद्धतीतील आजीचे शिस्तबद्ध नेतृत्व आणि मायेची सावली.",
-          qa: [
-            { type: "नवनीत — थोडक्यात उत्तरे", q: "आजीच्या व्यक्तिमत्त्वाची प्रमुख वैशिष्ट्ये कोणती?", a: "आजी काटकसरी, शिस्तप्रिय, कष्टाळू आणि कुटुंबातील प्रत्येक व्यक्तीची काळजी घेणारी आधारवड होती." }
-          ]
-        },
-        {
-          title: "D. ४. उत्तम लक्षण",
-          syllabus: "पाठ्यांश: संत रामदास स्वामींच्या दासबोधातील उत्तम माणसाची लक्षणे सांगणारा अभंग.",
-          qa: [
-            { type: "नवनीत — थोडक्यात उत्तरे", q: "संत रामदासांच्या मते 'उत्तम लक्षण' कोणते?", a: "जो दुसऱ्याचा मत्सर करत नाही, नम्रतेने वागतो, सत्य बोलतो आणि नेहमी सत्कर्मात रत असतो तोच उत्तम गुणसंपन्न होय." }
-          ]
-        }
-      ]
-    },
-    "हिंदी (लोकभारती)": {
-      chapters: [
-        {
-          title: "A. १. भारत महिमा",
-          syllabus: "पाठांश: भारत की प्राकृतिक छटा, ज्ञान के प्रथम उदय और विश्व-कल्याण की भावना।",
-          qa: [
-            { type: "नवनीत — थोडक्यात उत्तरे", q: "भारत की किन विशेषताओं का उल्लेख कविता में किया गया है?", a: "हिमालय की ऊँचाई, सागर की गहराई, ज्ञान का प्रथम प्रकाश और अतिथि देवो भव की परंपरा का उल्लेख है।" }
-          ]
-        },
-        {
-          title: "B. २. लक्ष्मी",
-          syllabus: "पाठांश: पशु-प्रेम, कर्तव्यनिष्ठा और संवेदनशीलता दर्शाने वाली कहानी।",
-          qa: [
-            { type: "नवनीत — कारणे लिहा", q: "करामती अली ने लक्ष्मी को अपने पास क्यों रखा?", a: "लक्ष्मी बूढ़ी हो जाने पर भी वह उससे स्नेह करता था और उसे बेसहारा नहीं छोड़ना चाहता था।" }
-          ]
-        }
-      ]
-    },
-    "English (Kumarbharati)": {
-      chapters: [
-        {
-          title: "A. 1.1 Where the Mind is Without Fear",
-          syllabus: "Syllabus: Rabindranath Tagore’s vision of freedom, reason, truth, and universal brotherhood.",
-          qa: [
-            { type: "नवनीत — थोडक्यात उत्तरे", q: "What does 'where knowledge is free' mean in the poem?", a: "It means education and knowledge should be accessible to everyone without discrimination of caste, class, or wealth." }
-          ]
-        },
-        {
-          title: "B. 1.2 The Thief’s Story",
-          syllabus: "Syllabus: Transformation of Hari Singh through Anil’s trust and education.",
-          qa: [
-            { type: "नवनीत — थोडक्यात उत्तरे", q: "How did Anil help Hari Singh change his life?", a: "Anil did not hand him over to the police; instead, he taught him to read, write, and add numbers." }
-          ]
-        }
-      ]
-    },
-    "गणित - भाग १ (बीजगणित)": {
-      chapters: [
-        {
-          title: "A. १. दोन चलांतील रेषीय समीकरणे",
-          syllabus: "अभ्यासक्रम: ax + by + c = 0, एकसामयिक समीकरणे, निश्चयक (Determinant) व क्रेमरची पद्धत.",
-          qa: [
-            { type: "प्रमेय / गणित", q: "क्रेमरच्या पद्धतीने x व y ची सूत्रे लिहा आणि D ≠ 0 का असावे?", a: "x = Dx / D, y = Dy / D. छेदात शून्य आल्यास भागाकार अपरिभाषित होतो, म्हणून D ≠ 0 आवश्यक असते." }
-          ]
-        },
-        {
-          title: "B. २. वर्गसमीकरणे",
-          syllabus: "अभ्यासक्रम: ax² + bx + c = 0, अवयव पद्धत, पूर्ण वर्ग पद्धत, सूत्र पद्धत व मुळांचे स्वरूप (Δ).",
-          qa: [
-            { type: "नवनीत — थोडक्यात उत्तरे", q: "विवेचक Δ = b² - 4ac वरून मुळांचे स्वरूप कसे ठरते?", a: "Δ > 0 असल्यास मुळे वास्तव व भिन्न, Δ = 0 असल्यास वास्तव व समान, आणि Δ < 0 असल्यास मुळे वास्तव नसतात." }
-          ]
-        },
-        {
-          title: "C. ३. अंकगणिती श्रेढी",
-          syllabus: "अभ्यासक्रम: सामान्य फरक (d), n वे पद (tn = a + (n-1)d) आणि पहिल्या n पदांची बेरीज (Sn).",
-          qa: [
-            { type: "नवनीत — थोडक्यात उत्तरे", q: "अंकगणिती श्रेढी ओळखण्याची कसोटी कोणती?", a: "कोणत्याही दोन सलग पदांतील फरक (tₙ₊₁ - tₙ) स्थिर (अचल) असेल तर ती श्रेढी अंकगणिती श्रेढी असते." }
-          ]
-        }
-      ]
-    },
-    "गणित - भाग २ (भूमिती)": {
-      chapters: [
-        {
-          title: "A. १. समरूपता",
-          syllabus: "अभ्यासक्रम: त्रिकोणांच्या क्षेत्रफळांचे गुणोत्तर, प्रमाणाचे मूलभूत प्रमेय (BPT) व समरूप त्रिकोणांचे गुणधर्म.",
-          qa: [
-            { type: "प्रमेय / गणित", q: "प्रमाणाचे मूलभूत प्रमेय विधान व आकृतीसह स्पष्ट करा.", a: "ΔABC मध्ये रेषा l || बाजू BC आणि ती AB व AC ला अनुक्रमे P व Q मध्ये छेदते, तर AP/PB = AQ/QC." }
-          ]
-        },
-        {
-          title: "B. २. पायथागोरसचे प्रमेय",
-          syllabus: "अभ्यासक्रम: काटकोन त्रिकोणातील समरूपता, पायथागोरस प्रमेय व त्रिकुटे.",
-          qa: [
-            { type: "प्रमेय / गणित", q: "पायथागोरसचे प्रमेय लिहा व (3, 4, 5) हे पायथागोरसचे त्रिकूट का आहे ते दाखवा.", a: "कर्णाचा वर्ग = इतर दोन बाजूंच्या वर्गांची बेरीज. येथे 3² + 4² = 9 + 16 = 25 = 5², म्हणून ते पायथागोरसचे त्रिकूट आहे." }
-          ]
-        },
-        {
-          title: "C. ३. वर्तुळ व चौकोन रचना",
-          syllabus: "अभ्यासक्रम: वर्तुळाचे गुणधर्म, स्पर्शिका, त्रिकोण व चौकोन गुणधर्म.",
-          qa: [
-            { type: "नवनीत — थोडक्यात उत्तरे", q: "चौकोनाच्या चारही कोनांच्या मापांची बेरीज किती असते?", a: "चौकोनाच्या कोणत्याही चार कोनांच्या मापांची बेरीज 360° असते." }
-          ]
-        }
-      ]
-    },
-    "विज्ञान व तंत्रज्ञान - १": {
-      chapters: [
-        {
-          title: "A. १. गुरुत्वाकर्षण",
-          syllabus: "अभ्यासक्रम: केप्लरचे नियम, न्यूटनचा वैश्विक गुरुत्वाकर्षणाचा सिद्धांत, g व G, मुक्ती वेग.",
-          qa: [
-            { type: "नवनीत — कारणे लिहा", q: "ध्रुवांपेक्षा विषुववृत्तावर g चे मूल्य कमी का असते?", a: "पृथ्वी विषुववृत्तावर फुगीर असल्याने त्रिज्या जास्त असते; g ∝ 1/R² मुळे विषुववृत्तावर g कमी असते." }
-          ]
-        },
-        {
-          title: "B. २. मूलद्रव्यांचे आवर्ती वर्गीकरण",
-          syllabus: "अभ्यासक्रम: डोबेरायनर, न्यूलँड, मेंडेलीव्ह आणि आधुनिक आवर्तसारणी.",
-          qa: [
-            { type: "नवनीत — थोडक्यात उत्तरे", q: "आधुनिक आवर्तसारणीतील आवर्त व गण म्हणजे काय?", a: "आडव्या ओळींना 'आवर्त' (१ ते ७) आणि उभ्या स्तंभांना 'गण' (१ ते १८) म्हणतात." }
-          ]
-        }
-      ]
-    },
-    "विज्ञान व तंत्रज्ञान - २": {
-      chapters: [
-        {
-          title: "A. १. आनुवंशिकता व उत्क्रांती",
-          syllabus: "अभ्यासक्रम: DNA, प्रतिलेखन, भाषांतरण, स्थानांतरण, उत्क्रांतीचे पुरावे व डार्विनचा सिद्धांत.",
-          qa: [
-            { type: "नवनीत — थोडक्यात उत्तरे", q: "उत्क्रांतीचे शरीरशास्त्रीय पुरावे म्हणजे काय?", a: "प्राण्यांच्या अवयवांच्या रचनेतील साम्य (उदा. मानवाचा हात, बेडकाचा पुढचा पाय, वटवाघळाचे पंख) हे समान पूर्वज दर्शवते." }
-          ]
-        }
-      ]
-    },
-    "इतिहास, राज्यशास्त्र व भूगोल": {
-      chapters: [
-        {
-          title: "A. इतिहास — १. इतिहासलेखन : पाश्चात्य परंपरा",
-          syllabus: "अभ्यासक्रम: आधुनिक इतिहासलेखन, व्हॉल्तेअर, हेगेल, मार्क्स व अ‍ॅनल्स प्रणाली.",
-          qa: [
-            { type: "नवनीत — थोडक्यात उत्तरे", q: "इतिहासलेखनात कागदपत्रांची कसून छाननी का करावी लागते?", a: "ऐतिहासिक नोंदीतील अचूकता, विश्वासार्हता आणि पक्षपातरहित सत्य पडताळण्यासाठी छाननी आवश्यक असते." }
-          ]
-        },
-        {
-          title: "B. राज्यशास्त्र — १. संविधानाची वाटचाल",
-          syllabus: "अभ्यासक्रम: लोकशाही, सामाजिक न्याय, विकेंद्रीकरण व निवडणूक सुधारणा.",
-          qa: [
-            { type: "नवनीत — थोडक्यात उत्तरे", q: "स्थानिक स्वराज्य संस्थांचे महत्त्व स्पष्ट करा.", a: "स्थानिक पातळीवरील प्रश्न स्थानिक लोकांच्या सहभागातून जलद सुटतात आणि लोकशाहीची मुळे घट्ट होतात." }
-          ]
-        },
-        {
-          title: "C. भूगोल — १. क्षेत्रभेट व स्थान-विस्तार",
-          syllabus: "अभ्यासक्रम: क्षेत्रभेटीची तयारी, भारत व ब्राझीलचे स्थान, विस्तार आणि नैसर्गिक वैशिष्ट्ये.",
-          qa: [
-            { type: "नवनीत — थोडक्यात उत्तरे", q: "क्षेत्रभेटीपूर्वी कोणती पूर्वतयारी करावी लागते?", a: "उद्दिष्ट निश्चित करणे, प्रश्नावली तयार करणे, आवश्यक साहित्य घेणे आणि सुरक्षिततेचे नियम पाळणे." }
-          ]
-        }
-      ]
-    }
-  };
+  let curPart = Object.keys(MATHS_SYLLABUS)[0];
+  let curChIdx = 0;
+  let selfPracticeMode = false;
+  let userAnswers = {};
 
-  let db = loadDB();
-  let curSubject = Object.keys(db)[0];
-  let curChapterIdx = 0;
-
-  function loadDB() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) return JSON.parse(raw);
-    } catch (e) {}
-    return JSON.parse(JSON.stringify(initialData));
-  }
-
-  function saveDB() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
-  }
-
-  function renderSubjects() {
-    const el = document.getElementById("subjectTabs");
+  function renderPartTabs() {
+    const el = document.getElementById("partTabs");
     el.innerHTML = "";
-    Object.keys(db).forEach((subj) => {
-      const btn = document.createElement("button");
-      btn.className = "sub-btn" + (subj === curSubject ? " active" : "");
-      btn.textContent = subj;
-      btn.onclick = () => {
-        curSubject = subj;
-        curChapterIdx = 0;
-        renderSubjects();
-        renderChapters();
-        renderQA();
+    Object.keys(MATHS_SYLLABUS).forEach((part) => {
+      const b = document.createElement("button");
+      b.className = "tab-btn" + (part === curPart ? " active" : "");
+      b.textContent = part;
+      b.onclick = () => {
+        curPart = part;
+        curChIdx = 0;
+        renderPartTabs();
+        renderChapterSelectors();
+        renderChapterContent();
       };
-      el.appendChild(btn);
+      el.appendChild(b);
     });
   }
 
-  function renderChapters() {
-    const chapters = db[curSubject].chapters;
-    document.getElementById("currentSubjectHeading").textContent = "२. " + curSubject + " — A ते Z धडे निवडा";
-    document.getElementById("chapterCountLabel").textContent = "एकूण धडे: " + chapters.length;
+  function renderChapterSelectors() {
+    const list = MATHS_SYLLABUS[curPart];
+    const sel = document.getElementById("chapterSelect");
+    const btns = document.getElementById("chapterButtons");
+    sel.innerHTML = "";
+    btns.innerHTML = "";
 
-    const dd = document.getElementById("chapterDropdown");
-    const pills = document.getElementById("chapterPills");
-    dd.innerHTML = "";
-    pills.innerHTML = "";
-
-    chapters.forEach((ch, idx) => {
+    list.forEach((ch, idx) => {
       const opt = document.createElement("option");
       opt.value = idx;
       opt.textContent = ch.title;
-      if (idx === curChapterIdx) opt.selected = true;
-      dd.appendChild(opt);
+      if (idx === curChIdx) opt.selected = true;
+      sel.appendChild(opt);
 
-      const pill = document.createElement("button");
-      pill.className = "ch-pill" + (idx === curChapterIdx ? " active" : "");
-      pill.textContent = ch.title;
-      pill.onclick = () => selectChapter(idx);
-      pills.appendChild(pill);
+      const b = document.createElement("button");
+      b.className = "tab-btn" + (idx === curChIdx ? " active" : "");
+      b.textContent = ch.title;
+      b.onclick = () => {
+        curChIdx = idx;
+        renderChapterSelectors();
+        renderChapterContent();
+      };
+      btns.appendChild(b);
     });
   }
 
-  function onDropdownChange() {
-    selectChapter(Number(document.getElementById("chapterDropdown").value));
+  function onChapterSelect() {
+    curChIdx = Number(document.getElementById("chapterSelect").value);
+    renderChapterSelectors();
+    renderChapterContent();
   }
 
-  function selectChapter(idx) {
-    curChapterIdx = idx;
-    renderChapters();
-    renderQA();
-  }
+  function renderChapterContent() {
+    const ch = MATHS_SYLLABUS[curPart][curChIdx];
+    document.getElementById("chapterHeading").textContent = `${curPart} — ${ch.title}`;
+    document.getElementById("modeBadge").textContent = selfPracticeMode
+      ? "मोड: १. प्रश्न तुमचे, उत्तर आमचे"
+      : "मोड: सोडवलेले प्रश्नोत्तरे";
 
-  function toggleAddChapterForm() {
-    const f = document.getElementById("addChapterForm");
-    f.style.display = f.style.display === "none" ? "block" : "none";
-  }
-
-  function saveNewChapter() {
-    const inp = document.getElementById("newChapterTitle");
-    const title = inp.value.trim();
-    if (!title) return;
-    db[curSubject].chapters.push({
-      title,
-      syllabus: "पाठ्यांश: या धड्याचे महत्त्वाचे मुद्दे येथे जोडा.",
-      qa: []
+    const pts = document.getElementById("chapterPoints");
+    pts.innerHTML = "";
+    ch.points.forEach((p) => {
+      const li = document.createElement("li");
+      li.textContent = p;
+      pts.appendChild(li);
     });
-    inp.value = "";
-    document.getElementById("addChapterForm").style.display = "none";
-    curChapterIdx = db[curSubject].chapters.length - 1;
-    saveDB();
-    renderChapters();
-    renderQA();
-  }
 
-  function renderQA() {
-    const ch = db[curSubject].chapters[curChapterIdx];
-    if (!ch) return;
-    document.getElementById("activeChapterTitle").textContent = ch.title;
-    document.getElementById("syllabusSummary").textContent = ch.syllabus;
+    const qBox = document.getElementById("questionsContainer");
+    qBox.innerHTML = "";
 
-    const query = document.getElementById("qaSearch").value.trim().toLowerCase();
-    const list = document.getElementById("qaList");
-    list.innerHTML = "";
+    ch.qa.forEach((item, idx) => {
+      const key = `${curPart}__${curChIdx}__${idx}`;
+      const savedAns = userAnswers[key] || "";
+      const div = document.createElement("div");
+      div.className = "q-item";
 
-    const items = ch.qa.filter(
-      (item) =>
-        item.q.toLowerCase().includes(query) ||
-        item.a.toLowerCase().includes(query) ||
-        item.type.toLowerCase().includes(query)
-    );
-
-    if (items.length === 0) {
-      list.innerHTML = "<p style='color:var(--muted);'>या धड्यात सध्या प्रश्नोत्तरे नाहीत; खालील फॉर्ममधून जोडा.</p>";
-      return;
-    }
-
-    items.forEach((item, i) => {
-      const card = document.createElement("div");
-      card.className = "qa-card";
-      card.innerHTML = `
-        <span class="q-badge">${escapeHtml(item.type)}</span>
-        <div class="q-text">प्र. ${i + 1}: ${escapeHtml(item.q)}</div>
-        <button class="btn btn-outline" style="margin-top:7px;" onclick="toggleAns(this)">उत्तर पहा</button>
-        <div class="a-text"><strong>उत्तर:</strong> ${escapeHtml(item.a)}</div>
-      `;
-      list.appendChild(card);
+      if (selfPracticeMode) {
+        div.innerHTML = `
+          <div class="q-head">प्रश्न ${idx + 1} (तुमच्यासाठी): ${escapeHtml(item.q)}</div>
+          <div class="my-ans-box">
+            <label style="font-size:0.82rem; font-weight:700;">तुमचे उत्तर येथे लिहा (किंवा खालील फलकावर सोडवा):</label>
+            <textarea rows="3" oninput="saveMyAns('${key}', this.value)" placeholder="तुमचे उत्तर येथे लिहा...">${escapeHtml(savedAns)}</textarea>
+            <button class="btn btn-outline" style="margin-top:6px;" onclick="toggleSolution(this)">आमचे सोडवलेले उत्तर पहा</button>
+            <div class="solved-box" style="display:none;"><strong>आमचे सोडवलेले उत्तर:</strong>\n${escapeHtml(item.a)}</div>
+          </div>
+        `;
+      } else {
+        div.innerHTML = `
+          <div class="q-head">प्र. ${idx + 1}: ${escapeHtml(item.q)}</div>
+          <div class="solved-box"><strong>सोडवलेले उत्तर:</strong>\n${escapeHtml(item.a)}</div>
+        `;
+      }
+      qBox.appendChild(div);
     });
   }
 
-  function toggleAns(btn) {
-    const ans = btn.nextElementSibling;
-    const shown = ans.classList.toggle("show");
-    btn.textContent = shown ? "उत्तर लपवा" : "उत्तर पहा";
+  function saveMyAns(key, val) {
+    userAnswers[key] = val;
   }
 
-  function toggleAllAnswers(show) {
-    document.querySelectorAll("#qaList .a-text").forEach((el) => el.classList.toggle("show", show));
-    document.querySelectorAll("#qaList .btn-outline").forEach((b) => {
-      b.textContent = show ? "उत्तर लपवा" : "उत्तर पहा";
-    });
+  function toggleSolution(btn) {
+    const sol = btn.nextElementSibling;
+    const vis = sol.style.display === "block";
+    sol.style.display = vis ? "none" : "block";
+    btn.textContent = vis ? "आमचे सोडवलेले उत्तर पहा" : "उत्तर लपवा";
   }
 
-  function addQAItem() {
-    const type = document.getElementById("newQType").value;
-    const q = document.getElementById("newQText").value.trim();
-    const a = document.getElementById("newAText").value.trim();
-    if (!q || !a) return;
-    db[curSubject].chapters[curChapterIdx].qa.push({ type, q, a });
-    document.getElementById("newQText").value = "";
-    document.getElementById("newAText").value = "";
-    saveDB();
-    renderQA();
+  function toggleSelfPracticeMode() {
+    selfPracticeMode = !selfPracticeMode;
+    document.getElementById("btnMode1").classList.toggle("active", selfPracticeMode);
+    renderChapterContent();
   }
 
-  /* -------- CANVAS: PEN, ERASER, TRIANGLE & QUADRILATERAL -------- */
-  const canvas = document.getElementById("mathCanvas");
+  function toggleBoardSheet() {
+    const card = document.getElementById("boardSheetCard");
+    const show = card.style.display === "none";
+    card.style.display = show ? "block" : "none";
+    document.getElementById("btnMode2").classList.toggle("active", show);
+    if (show) card.scrollIntoView({ behavior: "smooth" });
+  }
+
+  function clearBoardSheet() {
+    document.getElementById("seatNo").value = "";
+    document.getElementById("boardQNo").value = "";
+    document.getElementById("boardSubPart").value = "";
+    document.getElementById("boardAnswerArea").value = "";
+  }
+
+  function scrollToSection(id) {
+    document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+  }
+
+  /* -------- CANVAS: PEN, ERASER, TRIANGLE, QUADRILATERAL -------- */
+  const canvas = document.getElementById("solveCanvas");
   const ctx = canvas.getContext("2d");
-  let currentTool = "pen";
-  let drawing = false;
-  let startX = 0, startY = 0;
-  let snapshot = null;
+  let tool = "pen";
+  let isDown = false;
+  let sx = 0, sy = 0, snap = null;
 
-  function resizeCanvas() {
+  function resizeSolveCanvas() {
     const rect = canvas.getBoundingClientRect();
-    const imgData = canvas.width && canvas.height ? ctx.getImageData(0, 0, canvas.width, canvas.height) : null;
+    const prev = canvas.width && canvas.height ? ctx.getImageData(0, 0, canvas.width, canvas.height) : null;
     canvas.width = Math.max(300, Math.floor(rect.width));
     canvas.height = Math.max(240, Math.floor(rect.height));
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    if (imgData) ctx.putImageData(imgData, 0, 0);
+    if (prev) ctx.putImageData(prev, 0, 0);
   }
 
-  window.addEventListener("resize", resizeCanvas);
+  window.addEventListener("resize", resizeSolveCanvas);
 
-  function setTool(tool) {
-    currentTool = tool;
-    document.querySelectorAll(".tool-btn").forEach((b) => b.classList.remove("active"));
-    const map = { pen: "toolPen", eraser: "toolEraser", triangle: "toolTriangle", quad: "toolQuad" };
-    document.getElementById(map[tool]).classList.add("active");
+  function setCanvasTool(t) {
+    tool = t;
+    ["tPen", "tEraser", "tTri", "tQuad"].forEach((id) => document.getElementById(id).classList.remove("active"));
+    const map = { pen: "tPen", eraser: "tEraser", triangle: "tTri", quad: "tQuad" };
+    document.getElementById(map[t]).classList.add("active");
   }
 
-  function getPos(e) {
+  function pt(e) {
     const r = canvas.getBoundingClientRect();
     return { x: e.clientX - r.left, y: e.clientY - r.top };
   }
 
-  function drawTriangleShape(x1, y1, x2, y2, type, label) {
+  function renderTriangle(x1, y1, x2, y2, kind, label) {
     ctx.save();
-    ctx.strokeStyle = document.getElementById("strokeColor").value;
-    ctx.lineWidth = Number(document.getElementById("strokeWidth").value) || 2.5;
+    ctx.strokeStyle = document.getElementById("penColor").value;
     ctx.fillStyle = ctx.strokeStyle;
+    ctx.lineWidth = Number(document.getElementById("penSize").value) || 3;
     ctx.font = "bold 13px system-ui, sans-serif";
-
     ctx.beginPath();
-    if (type === "right") {
+
+    if (kind === "right") {
       ctx.moveTo(x1, y1);
       ctx.lineTo(x1, y2);
       ctx.lineTo(x2, y2);
       ctx.closePath();
-    } else if (type === "equilateral") {
-      const base = Math.hypot(x2 - x1, y2 - y1);
+    } else if (kind === "equilateral") {
+      const base = Math.max(40, Math.hypot(x2 - x1, y2 - y1));
       const h = (Math.sqrt(3) / 2) * base;
       ctx.moveTo(x1, y2);
       ctx.lineTo(x1 + base, y2);
       ctx.lineTo(x1 + base / 2, y2 - h);
       ctx.closePath();
     } else {
-      const midX = (x1 + x2) / 2;
-      ctx.moveTo(midX, y1);
+      const mid = (x1 + x2) / 2;
+      ctx.moveTo(mid, y1);
       ctx.lineTo(x1, y2);
       ctx.lineTo(x2, y2);
       ctx.closePath();
@@ -847,30 +851,30 @@
     ctx.restore();
   }
 
-  function drawQuadShape(x1, y1, x2, y2, type, label) {
+  function renderQuad(x1, y1, x2, y2, kind, label) {
     ctx.save();
-    ctx.strokeStyle = document.getElementById("strokeColor").value;
-    ctx.lineWidth = Number(document.getElementById("strokeWidth").value) || 2.5;
+    ctx.strokeStyle = document.getElementById("penColor").value;
     ctx.fillStyle = ctx.strokeStyle;
+    ctx.lineWidth = Number(document.getElementById("penSize").value) || 3;
     ctx.font = "bold 13px system-ui, sans-serif";
 
-    let left = Math.min(x1, x2);
-    let top = Math.min(y1, y2);
+    const left = Math.min(x1, x2);
+    const top = Math.min(y1, y2);
     let w = Math.abs(x2 - x1);
     let h = Math.abs(y2 - y1);
-    if (type === "square") {
-      const s = Math.max(w, h);
+    if (kind === "square") {
+      const s = Math.max(40, Math.max(w, h));
       w = s;
       h = s;
     }
 
     ctx.beginPath();
-    if (type === "parallelogram") {
-      const skew = Math.min(30, w * 0.25);
-      ctx.moveTo(left + skew, top);
-      ctx.lineTo(left + w + skew, top);
-      ctx.lineTo(left + w - skew, top + h);
-      ctx.lineTo(left - skew, top + h);
+    if (kind === "parallelogram") {
+      const shift = Math.min(28, w * 0.25);
+      ctx.moveTo(left + shift, top);
+      ctx.lineTo(left + w + shift, top);
+      ctx.lineTo(left + w - shift, top + h);
+      ctx.lineTo(left - shift, top + h);
       ctx.closePath();
     } else {
       ctx.rect(left, top, w, h);
@@ -880,61 +884,51 @@
     ctx.restore();
   }
 
-  function stampSelectedShape() {
+  function drawPresetShape() {
     const cx = canvas.width / 2;
     const cy = canvas.height / 2;
-    const label = document.getElementById("shapeLabel").value.trim();
-    if (currentTool === "quad") {
-      drawQuadShape(cx - 75, cy - 55, cx + 75, cy + 55, document.getElementById("quadType").value, label);
+    const label = document.getElementById("shapeName").value.trim();
+    if (tool === "quad") {
+      renderQuad(cx - 70, cy - 50, cx + 70, cy + 50, document.getElementById("quadKind").value, label);
     } else {
-      setTool("triangle");
-      drawTriangleShape(cx - 75, cy - 55, cx + 75, cy + 55, document.getElementById("triType").value, label);
+      setCanvasTool("triangle");
+      renderTriangle(cx - 70, cy - 50, cx + 70, cy + 50, document.getElementById("triKind").value, label);
     }
   }
 
   canvas.addEventListener("pointerdown", (e) => {
     canvas.setPointerCapture(e.pointerId);
-    const pos = getPos(e);
-    startX = pos.x;
-    startY = pos.y;
-    drawing = true;
-
-    if (currentTool === "pen" || currentTool === "eraser") {
+    const p = pt(e);
+    sx = p.x; sy = p.y; isDown = true;
+    if (tool === "pen" || tool === "eraser") {
       ctx.beginPath();
-      ctx.moveTo(startX, startY);
+      ctx.moveTo(sx, sy);
     } else {
-      snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      snap = ctx.getImageData(0, 0, canvas.width, canvas.height);
     }
   });
 
   canvas.addEventListener("pointermove", (e) => {
-    if (!drawing) return;
-    const pos = getPos(e);
-    const label = document.getElementById("shapeLabel").value.trim();
-
-    if (currentTool === "pen" || currentTool === "eraser") {
+    if (!isDown) return;
+    const p = pt(e);
+    const label = document.getElementById("shapeName").value.trim();
+    if (tool === "pen" || tool === "eraser") {
       ctx.save();
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
-      ctx.lineWidth = Number(document.getElementById("strokeWidth").value) || 3;
-      ctx.strokeStyle = currentTool === "eraser" ? "#ffffff" : document.getElementById("strokeColor").value;
-      ctx.lineTo(pos.x, pos.y);
+      ctx.lineWidth = Number(document.getElementById("penSize").value) || 3;
+      ctx.strokeStyle = tool === "eraser" ? "#ffffff" : document.getElementById("penColor").value;
+      ctx.lineTo(p.x, p.y);
       ctx.stroke();
       ctx.restore();
-    } else if (snapshot) {
-      ctx.putImageData(snapshot, 0, 0);
-      if (currentTool === "triangle") {
-        drawTriangleShape(startX, startY, pos.x, pos.y, document.getElementById("triType").value, label);
-      } else if (currentTool === "quad") {
-        drawQuadShape(startX, startY, pos.x, pos.y, document.getElementById("quadType").value, label);
-      }
+    } else if (snap) {
+      ctx.putImageData(snap, 0, 0);
+      if (tool === "triangle") renderTriangle(sx, sy, p.x, p.y, document.getElementById("triKind").value, label);
+      if (tool === "quad") renderQuad(sx, sy, p.x, p.y, document.getElementById("quadKind").value, label);
     }
   });
 
-  canvas.addEventListener("pointerup", () => {
-    drawing = false;
-    snapshot = null;
-  });
+  canvas.addEventListener("pointerup", () => { isDown = false; snap = null; });
 
   function clearCanvas() {
     ctx.fillStyle = "#ffffff";
@@ -942,64 +936,102 @@
   }
 
   /* -------- THEOREM / PROOF STEP CHECKER & CORRECTION -------- */
-  function loadTheoremTemplate() {
-    const key = document.getElementById("theoremSelect").value;
-    const rule = THEOREM_RULES[key];
-    document.getElementById("theoremGuide").innerHTML =
-      `<strong>${escapeHtml(rule.title)}</strong><br/>अपेक्षित नियम/विधान: ${escapeHtml(rule.expected)}`;
+  const PROOF_CHECKS = {
+    bpt: {
+      req: ["समांतर", "प्रमाण"],
+      bad: ["असमान", "180"],
+      rightMsg: "बरोबर! प्रमाणाच्या मूलभूत प्रमेयातील समांतर रेषा व समान प्रमाणाची पायरी योग्य आहे.",
+      fixMsg: "दुरुस्ती (Correction): प्रमेयात रेषा एका बाजूला 'समांतर' असायला हवी आणि तिने उरलेल्या दोन बाजूंना 'समान प्रमाणात' (उदा. AP/PB = AQ/QC) विभागले पाहिजे. ('असमान' किंवा '180' असल्यास दुरुस्त करा.)"
+    },
+    pythagoras: {
+      req: ["काटकोन", "कर्ण", "वर्ग"],
+      bad: ["वजाबाकी", "minus"],
+      rightMsg: "बरोबर! काटकोन त्रिकोणात कर्णाचा वर्ग आणि बाजूंच्या वर्गांची बेरीज योग्य लिहिली आहे.",
+      fixMsg: "दुरुस्ती (Correction): त्रिकोण 'काटकोन' असावा आणि कर्णाचा वर्ग = उरलेल्या दोन बाजूंच्या वर्गांची 'बेरीज' (AC² = AB² + BC²) अशी लिहावी; 'वजाबाकी' आली असल्यास ती दुरुस्त करा."
+    },
+    tangent: {
+      req: ["स्पर्शिका", "त्रिज्या", "90"],
+      bad: ["45", "180"],
+      rightMsg: "बरोबर! स्पर्शिका व त्रिज्या यांच्यातील 90° (लंब) संबंध योग्य आहे.",
+      fixMsg: "दुरुस्ती (Correction): स्पर्शिका-त्रिज्या प्रमेयानुसार स्पर्शबिंदूपाशी त्रिज्या व स्पर्शिका एकमेकांस लंब असतात, म्हणजे कोन 90° असतो."
+    },
+    quad_diag: {
+      req: ["समांतरभुज", "कर्ण", "दुभाग"],
+      bad: ["लंबच"],
+      rightMsg: "बरोबर! समांतरभुज चौकोनाचे कर्ण एकमेकांना दुभागतात हा गुणधर्म बरोबर आहे.",
+      fixMsg: "दुरुस्ती (Correction): समांतरभुज चौकोनाचे कर्ण एकमेकांना 'दुभागतात' (समान दोन भागांत विभागतात) हे विधान तपासा."
+    },
+    quad_angles: {
+      req: ["चौकोन", "360"],
+      bad: ["180"],
+      rightMsg: "बरोबर! चौकोनाच्या चारही कोनांच्या मापांची बेरीज 360° योग्य लिहिली आहे.",
+      fixMsg: "दुरुस्ती (Correction): त्रिकोणाच्या कोनांची बेरीज 180° असते, पण चौकोनाच्या कोनांची बेरीज 360° असते. येथे 180° ऐवजी 360° असे दुरुस्त करा."
+    },
+    quadratic_roots: {
+      req: ["b²", "4ac", "2a"],
+      bad: ["+ 4ac", "/ a"],
+      rightMsg: "बरोबर! वर्गसमीकरण सूत्रातील b² - 4ac आणि छेदातील 2a योग्य आहेत.",
+      fixMsg: "दुरुस्ती (Correction): सूत्रात विवेचक (b² - 4ac) आणि छेद (2a) अचूक असावा; चिन्हातील किंवा छेदातील चूक सुधारा."
+    }
+  };
 
-    const container = document.getElementById("proofStepsContainer");
-    container.innerHTML = "";
-    addProofStep("पक्ष / विधान");
-    addProofStep("सिद्धता / गणित");
-    document.getElementById("proofResult").innerHTML = "";
+  function resetProofSteps() {
+    document.getElementById("proofRows").innerHTML = "";
+    document.getElementById("proofFeedback").innerHTML = "";
+    addProofRow("पायरी १");
+    addProofRow("पायरी २");
   }
 
-  function addProofStep(defaultLabel = "पुढील पायरी") {
-    const container = document.getElementById("proofStepsContainer");
-    const idx = container.children.length + 1;
+  function addProofRow(lbl = "पुढील पायरी") {
+    const wrap = document.getElementById("proofRows");
+    const n = wrap.children.length + 1;
     const row = document.createElement("div");
-    row.className = "step-row";
+    row.className = "proof-row";
     row.innerHTML = `
-      <input type="text" value="${escapeHtml(defaultLabel)} ${idx}" />
-      <input type="text" class="proof-step-input" placeholder="तुमची पायरी किंवा गणिती विधान येथे लिहा..." />
-      <button class="btn btn-outline" onclick="this.parentElement.remove()">काढा</button>
+      <input type="text" value="${escapeHtml(lbl)} ${n}" />
+      <input type="text" class="p-input" placeholder="तुमची पायरी किंवा विधान येथे लिहा..." />
+      <button class="btn btn-outline" onclick="this.parentElement.remove()">हटवा</button>
     `;
-    container.appendChild(row);
+    wrap.appendChild(row);
   }
 
-  function checkProofSteps() {
-    const key = document.getElementById("theoremSelect").value;
-    const rule = THEOREM_RULES[key];
-    const inputs = [...document.querySelectorAll(".proof-step-input")];
-    const combined = inputs.map((i) => i.value.trim()).filter(Boolean).join(" ").toLowerCase();
-    const resEl = document.getElementById("proofResult");
+  function verifyProof() {
+    const key = document.getElementById("proofTopic").value;
+    const rule = PROOF_CHECKS[key];
+    const rows = [...document.querySelectorAll("#proofRows .proof-row")];
+    const fb = document.getElementById("proofFeedback");
 
-    if (!combined) {
-      resEl.innerHTML = `<div class="feedback-box feedback-err">कृपया किमान एक पायरी लिहा, जेणेकरून ती बरोबर आहे की चूक ते तपासता येईल.</div>`;
+    if (!rows.length) {
+      fb.innerHTML = `<div class="msg-err">कृपया किमान एक पायरी जोडा आणि लिहा.</div>`;
       return;
     }
 
-    const matched = rule.keywords.filter((kw) => combined.includes(kw.toLowerCase()));
-    const hasContradiction =
-      (key === "quad_sum" && combined.includes("180")) ||
-      (key === "bpt" && combined.includes("असमान")) ||
-      (key === "pythagoras" && combined.includes("वजाबाकी"));
+    let issues = [];
+    let combinedAll = "";
 
-    if (!hasContradiction && matched.length >= 2) {
-      resEl.innerHTML = `
-        <div class="feedback-box feedback-ok">
-          <strong>बरोबर:</strong> तुमच्या पायऱ्यांमध्ये <strong>${escapeHtml(rule.title)}</strong> चे मुख्य घटक (${matched.join(", ")}) योग्य प्रकारे आले आहेत.
-        </div>`;
+    rows.forEach((r, idx) => {
+      const stepLabel = r.children[0].value.trim() || `पायरी ${idx + 1}`;
+      const val = r.children[1].value.trim();
+      combinedAll += " " + val.toLowerCase();
+      const foundBad = rule.bad.filter((b) => val.toLowerCase().includes(b.toLowerCase()));
+      if (foundBad.length) {
+        issues.push(`${stepLabel} मध्ये चूक ("${foundBad.join(", ")}") दिसते.`);
+      }
+    });
+
+    const missingReq = rule.req.filter((rq) => !combinedAll.includes(rq.toLowerCase()));
+
+    if (issues.length === 0 && missingReq.length === 0) {
+      fb.innerHTML = `<div class="msg-ok"><strong>बरोबर:</strong> ${escapeHtml(rule.rightMsg)}</div>`;
     } else {
-      const missing = rule.keywords.filter((kw) => !combined.includes(kw.toLowerCase()));
-      resEl.innerHTML = `
-        <div class="feedback-box feedback-err">
-          <strong>चूक / अपूर्ण पायरी आढळली:</strong><br/>
-          ${escapeHtml(rule.fix)}<br/>
-          ${missing.length ? `<strong>लक्षात घ्यावयाचे घटक:</strong> ${missing.join(", ")}<br/>` : ""}
-          <strong>दुरुस्ती (Correction) नमुना:</strong> ${escapeHtml(rule.expected)}
-        </div>`;
+      const errDetails = [
+        ...issues,
+        missingReq.length ? `अपूर्ण/गहाळ घटक: ${missingReq.join(", ")}` : ""
+      ]
+        .filter(Boolean)
+        .join("\n");
+
+      fb.innerHTML = `<div class="msg-err"><strong>चूक आढळली — दुरुस्ती (Correction):</strong>\n${escapeHtml(errDetails)}\n\n${escapeHtml(rule.fixMsg)}</div>`;
     }
   }
 
@@ -1011,11 +1043,11 @@
       .replace(/"/g, "&quot;");
   }
 
-  resizeCanvas();
-  renderSubjects();
-  renderChapters();
-  renderQA();
-  loadTheoremTemplate();
+  resizeSolveCanvas();
+  renderPartTabs();
+  renderChapterSelectors();
+  renderChapterContent();
+  resetProofSteps();
 </script>
 </body>
 </html>
